@@ -37,7 +37,7 @@ jobs:
 
       - name: Test syntax files exist
         run: |
-          if [ ! -f "Nunjucks.sublime-syntax" ]; then
+          if [ ! -f "Nunjucks-toolbox.sublime-syntax" ]; then
             echo "❌ Main syntax file missing"
             exit 1
           fi
@@ -63,8 +63,9 @@ jobs:
         run: |
           python3 -c "
           import yaml
+          import sys
 
-          with open('Nunjucks.sublime-syntax', 'r') as f:
+          with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
               syntax = yaml.safe_load(f)
               
           contexts = syntax.get('contexts', {})
@@ -75,12 +76,12 @@ jobs:
           # Check for main context which should always exist
           if 'main' not in contexts:
               print('❌ Missing main context')
-              exit(1)
+              sys.exit(1)
           else:
               print('✅ Main context found')
 
           # Check for template-related contexts (these match your actual file)
-          template_contexts = ['template_filter', 'template_tag']
+          template_contexts = ['nunjucks-comments', 'nunjucks-variables', 'nunjucks-tags']
           found_template_contexts = [ctx for ctx in template_contexts if ctx in contexts]
 
           if found_template_contexts:
@@ -89,7 +90,7 @@ jobs:
               print('⚠️ No template-specific contexts found')
 
           # Check for HTML-related contexts
-          html_contexts = ['tag-stuff', 'string-double-quoted', 'string-single-quoted']
+          html_contexts = ['tag-stuff', 'string-double-quoted', 'string-single-quoted', 'html-content']
           found_html_contexts = [ctx for ctx in html_contexts if ctx in contexts]
 
           if found_html_contexts:
@@ -112,9 +113,9 @@ jobs:
           import sys
 
           try:
-              with open('Nunjucks.sublime-syntax', 'r') as f:
+              with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
                   yaml.safe_load(f)
-              print('✅ Nunjucks.sublime-syntax is valid YAML')
+              print('✅ Nunjucks-toolbox.sublime-syntax is valid YAML')
           except yaml.YAMLError as e:
               print(f'❌ YAML syntax error: {e}')
               sys.exit(1)

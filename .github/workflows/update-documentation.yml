@@ -2,165 +2,165 @@ name: Update Documentation
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
     paths:
-      - 'Nunjucks.sublime-syntax'
-      - 'README.md'
+      - "Nunjucks-toolbox.sublime-syntax"
+      - "README.md"
 
 jobs:
   update-docs:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Extract supported features
-      run: |
-        python3 -c "
-        import yaml
-        import re
-        
-        with open('Nunjucks.sublime-syntax', 'r') as f:
-            syntax = yaml.safe_load(f)
-            
-        # Extract file extensions
-        extensions = syntax.get('file_extensions', [])
-        print('Supported file extensions:')
-        for ext in extensions:
-            print(f'  - .{ext}')
-            
-        # Extract variables to show supported features
-        variables = syntax.get('variables', {})
-        
-        if 'nunjucks_tags' in variables:
-            tags = variables['nunjucks_tags']
-            # Extract tag names from regex
-            tag_matches = re.findall(r'(\w+)', tags)
-            unique_tags = sorted(set(tag_matches))
-            print(f'\\nSupported tags ({len(unique_tags)}):')
-            for tag in unique_tags[:10]:  # Show first 10
-                print(f'  - {tag}')
-            if len(unique_tags) > 10:
-                print(f'  - ... and {len(unique_tags) - 10} more')
-                
-        if 'nunjucks_filters' in variables:
-            filters = variables['nunjucks_filters']
-            filter_matches = re.findall(r'(\w+)', filters)
-            unique_filters = sorted(set(filter_matches))
-            print(f'\\nSupported filters ({len(unique_filters)}):')
-            for filter_name in unique_filters[:10]:  # Show first 10
-                print(f'  - {filter_name}')
-            if len(unique_filters) > 10:
-                print(f'  - ... and {len(unique_filters) - 10} more')
-        " > features.txt
-        
-    - name: Update README
-      run: |
-        cat > README.md << 'EOF'
-        # Sublime-nunjucks
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-        A [Nunjucks](https://mozilla.github.io/nunjucks/) syntax definition for Sublime Text 3 and 4.
+      - name: Extract supported features
+        run: |
+          python3 -c "
+          import yaml
+          import re
 
-        ## Features
+          with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
+              syntax = yaml.safe_load(f)
+              
+          # Extract file extensions
+          extensions = syntax.get('file_extensions', [])
+          print('Supported file extensions:')
+          for ext in extensions:
+              print(f'  - .{ext}')
+              
+          # Extract variables to show supported features
+          variables = syntax.get('variables', {})
 
-        - 🎨 **Syntax Highlighting** - Full Nunjucks template syntax support
-        - 🏷️ **Multiple Extensions** - Supports `.nunjucks`, `.nunjs`, `.njk`, and `.html` files
-        - 🔧 **Template Tags** - Complete support for all Nunjucks control structures
-        - 🎯 **Filters** - Built-in filter highlighting and completion
-        - 💬 **Comments** - Both line and block comment support
-        - 🌐 **HTML Integration** - Seamless integration with HTML syntax
-        - ⚡ **Performance** - Optimized for large template files
+          if 'nunjucks_tags' in variables:
+              tags = variables['nunjucks_tags']
+              # Extract tag names from regex
+              tag_matches = re.findall(r'(\w+)', tags)
+              unique_tags = sorted(set(tag_matches))
+              print(f'\\nSupported tags ({len(unique_tags)}):')
+              for tag in unique_tags[:10]:  # Show first 10
+                  print(f'  - {tag}')
+              if len(unique_tags) > 10:
+                  print(f'  - ... and {len(unique_tags) - 10} more')
+                  
+          if 'nunjucks_filters' in variables:
+              filters = variables['nunjucks_filters']
+              filter_matches = re.findall(r'(\w+)', filters)
+              unique_filters = sorted(set(filter_matches))
+              print(f'\\nSupported filters ({len(unique_filters)}):')
+              for filter_name in unique_filters[:10]:  # Show first 10
+                  print(f'  - {filter_name}')
+              if len(unique_filters) > 10:
+                  print(f'  - ... and {len(unique_filters) - 10} more')
+          " > features.txt
 
-        ## Installation
+      - name: Update README
+        run: |
+          cat > README.md << 'EOF'
+          # Nunjucks-toolbox
 
-        ### Via Package Control (Recommended)
-        1. Install [Package Control](https://packagecontrol.io/installation)
-        2. Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
-        3. Run "Package Control: Install Package"
-        4. Search for "Nunjucks" and install
+          A [Nunjucks](https://mozilla.github.io/nunjucks/) syntax definition for Sublime Text 3 and 4.
 
-        ### Manual Installation
-        1. Download the latest release from [GitHub Releases](https://github.com/andreacollet/sublime-nunjucks/releases)
-        2. Extract to your Sublime Text `Packages` directory
-        3. Restart Sublime Text
+          ## Features
 
-        ## Supported File Extensions
+          - 🎨 **Syntax Highlighting** - Full Nunjucks template syntax support
+          - 🏷️ **Multiple Extensions** - Supports `.nunjucks`, `.nunjs`, `.njk`, and `.html` files
+          - 🔧 **Template Tags** - Complete support for all Nunjucks control structures
+          - 🎯 **Filters** - Built-in filter highlighting and completion
+          - 💬 **Comments** - Both line and block comment support
+          - 🌐 **HTML Integration** - Seamless integration with HTML syntax
+          - ⚡ **Performance** - Optimized for large template files
 
-        The syntax automatically activates for files with these extensions:
-        - `.nunjucks`
-        - `.nunjs` 
-        - `.njk`
-        - `.html` (when containing Nunjucks syntax)
+          ## Installation
 
-        ## Syntax Examples
+          ### Via Package Control (Recommended)
+          1. Install [Package Control](https://packagecontrol.io/installation)
+          2. Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+          3. Run "Package Control: Install Package"
+          4. Search for "Nunjucks-toolbox" and install
 
-        ### Variables and Filters
-        ```nunjucks
-        {{ title | default("Welcome") | upper }}
-        {{ user.name | capitalize }}
-        {{ items | length }}
-        ```
+          ### Manual Installation
+          1. Download the latest release from [GitHub Releases](https://github.com/andreacollet/nunjucks-toolbox/releases)
+          2. Extract to your Sublime Text `Packages` directory
+          3. Restart Sublime Text
 
-        ### Control Structures
-        ```nunjucks
-        {% if user.isActive %}
-            <p>Welcome back, {{ user.name }}!</p>
-        {% else %}
-            <p>Please log in.</p>
-        {% endif %}
+          ## Supported File Extensions
 
-        {% for item in items %}
-            <li>{{ item.title }}</li>
-        {% endfor %}
-        ```
+          The syntax automatically activates for files with these extensions:
+          - `.nunjucks`
+          - `.nunjs` 
+          - `.njk`
+          - `.html` (when containing Nunjucks syntax)
 
-        ### Template Inheritance
-        ```nunjucks
-        {% extends "base.html" %}
-        {% block content %}
-            <h1>{{ page.title }}</h1>
-        {% endblock %}
-        ```
+          ## Syntax Examples
 
-        ### Macros
-        ```nunjucks
-        {% macro renderField(name, value="", type="text") %}
-            <input type="{{ type }}" name="{{ name }}" value="{{ value }}">
-        {% endmacro %}
+          ### Variables and Filters
+          ```nunjucks
+          {{ title | default("Welcome") | upper }}
+          {{ user.name | capitalize }}
+          {{ items | length }}
+          ```
 
-        {{ renderField("email", user.email, "email") }}
-        ```
+          ### Control Structures
+          ```nunjucks
+          {% if user.isActive %}
+              <p>Welcome back, {{ user.name }}!</p>
+          {% else %}
+              <p>Please log in.</p>
+          {% endif %}
 
-        ### Comments
-        ```nunjucks
-        {# This is a line comment #}
-        {% comment %}
-        This is a 
-        block comment
-        {% endcomment %}
-        ```
+          {% for item in items %}
+              <li>{{ item.title }}</li>
+          {% endfor %}
+          ```
 
-        ## Contributing
+          ### Template Inheritance
+          ```nunjucks
+          {% extends "base.html" %}
+          {% block content %}
+              <h1>{{ page.title }}</h1>
+          {% endblock %}
+          ```
 
-        Contributions are welcome! Please feel free to submit a Pull Request.
+          ### Macros
+          ```nunjucks
+          {% macro renderField(name, value="", type="text") %}
+              <input type="{{ type }}" name="{{ name }}" value="{{ value }}">
+          {% endmacro %}
 
-        ## License
+          {{ renderField("email", user.email, "email") }}
+          ```
 
-        This project is licensed under the MIT License.
-        EOF
-        
-    - name: Commit documentation updates
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        
-        if git diff --quiet; then
-          echo "No changes to commit"
-        else
-          git add README.md
-          git commit -m "docs: Update README with latest features [skip ci]"
-          git push
-        fi
+          ### Comments
+          ```nunjucks
+          {# This is a line comment #}
+          {% comment %}
+          This is a 
+          block comment
+          {% endcomment %}
+          ```
+
+          ## Contributing
+
+          Contributions are welcome! Please feel free to submit a Pull Request.
+
+          ## License
+
+          This project is licensed under the MIT License.
+          EOF
+
+      - name: Commit documentation updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git add README.md
+            git commit -m "docs: Update README with latest features [skip ci]"
+            git push
+          fi

@@ -1,14 +1,14 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/syntax.html
-name: HTML (Nunjucks)
+name: HTML (Nunjucks-toolbox)
 file_extensions:
   - nunjucks
   - nunjs
   - njk
   - html
 first_line_match: (?i:<!DOCTYPE\s+html|<html)
-scope: text.html.nunjucks
+scope: text.html.nunjucks-toolbox
 
 variables:
   # Nunjucks template tags
@@ -30,119 +30,119 @@ contexts:
   nunjucks-comments:
     # Block comments
     - match: "{% comment %}"
-      scope: punctuation.definition.comment.begin.nunjucks
+      scope: punctuation.definition.comment.begin.nunjucks-toolbox
       push:
-        - meta_scope: comment.block.nunjucks
+        - meta_scope: comment.block.nunjucks-toolbox
         - match: "{% endcomment %}"
-          scope: punctuation.definition.comment.end.nunjucks
+          scope: punctuation.definition.comment.end.nunjucks-toolbox
           pop: true
 
     # Line comments
     - match: "{#"
-      scope: punctuation.definition.comment.begin.nunjucks
+      scope: punctuation.definition.comment.begin.nunjucks-toolbox
       push:
-        - meta_scope: comment.line.nunjucks
+        - meta_scope: comment.line.nunjucks-toolbox
         - match: "#}"
-          scope: punctuation.definition.comment.end.nunjucks
+          scope: punctuation.definition.comment.end.nunjucks-toolbox
           pop: true
 
   nunjucks-variables:
     - match: "{{"
-      scope: punctuation.section.interpolation.begin.nunjucks
+      scope: punctuation.section.interpolation.begin.nunjucks-toolbox
       push:
-        - meta_scope: meta.interpolation.nunjucks
+        - meta_scope: meta.interpolation.nunjucks-toolbox
         - match: "}}"
-          scope: punctuation.section.interpolation.end.nunjucks
+          scope: punctuation.section.interpolation.end.nunjucks-toolbox
           pop: true
         - include: nunjucks-expressions
 
   nunjucks-tags:
     # Template tags with whitespace control
     - match: "{%-?"
-      scope: punctuation.section.tag.begin.nunjucks
+      scope: punctuation.section.tag.begin.nunjucks-toolbox
       push:
-        - meta_scope: meta.tag.nunjucks
+        - meta_scope: meta.tag.nunjucks-toolbox
         - match: "-?%}"
-          scope: punctuation.section.tag.end.nunjucks
+          scope: punctuation.section.tag.end.nunjucks-toolbox
           pop: true
         - include: nunjucks-tag-content
 
   nunjucks-tag-content:
     - match: \b({{nunjucks_tags}})\b
-      scope: keyword.control.nunjucks
+      scope: keyword.control.nunjucks-toolbox
     - match: \b({{nunjucks_operators}})\b
-      scope: keyword.operator.nunjucks
+      scope: keyword.operator.nunjucks-toolbox
     - include: nunjucks-expressions
 
   nunjucks-expressions:
     # Strings
     - match: '"'
-      scope: punctuation.definition.string.begin.nunjucks
+      scope: punctuation.definition.string.begin.nunjucks-toolbox
       push:
-        - meta_scope: string.quoted.double.nunjucks
+        - meta_scope: string.quoted.double.nunjucks-toolbox
         - match: '"'
-          scope: punctuation.definition.string.end.nunjucks
+          scope: punctuation.definition.string.end.nunjucks-toolbox
           pop: true
         - match: \\.
-          scope: constant.character.escape.nunjucks
+          scope: constant.character.escape.nunjucks-toolbox
 
     - match: "'"
-      scope: punctuation.definition.string.begin.nunjucks
+      scope: punctuation.definition.string.begin.nunjucks-toolbox
       push:
-        - meta_scope: string.quoted.single.nunjucks
+        - meta_scope: string.quoted.single.nunjucks-toolbox
         - match: "'"
-          scope: punctuation.definition.string.end.nunjucks
+          scope: punctuation.definition.string.end.nunjucks-toolbox
           pop: true
         - match: \\.
-          scope: constant.character.escape.nunjucks
+          scope: constant.character.escape.nunjucks-toolbox
 
     # Numbers
     - match: \b\d+\.?\d*\b
-      scope: constant.numeric.nunjucks
+      scope: constant.numeric.nunjucks-toolbox
 
     # Booleans and None
     - match: \b(true|false|none|null|undefined)\b
-      scope: constant.language.nunjucks
+      scope: constant.language.nunjucks-toolbox
 
     # Filters
     - match: \|
-      scope: punctuation.separator.filter.nunjucks
+      scope: punctuation.separator.filter.nunjucks-toolbox
       push:
         - match: \b({{nunjucks_filters}})\b
-          scope: support.function.filter.nunjucks
+          scope: support.function.filter.nunjucks-toolbox
         - match: \w+
-          scope: variable.function.filter.nunjucks
+          scope: variable.function.filter.nunjucks-toolbox
         - match: (?=\||%}|}}|$)
           pop: true
         - include: nunjucks-filter-arguments
 
     # Variables and properties
     - match: \b[a-zA-Z_][a-zA-Z0-9_]*\b
-      scope: variable.other.nunjucks
+      scope: variable.other.nunjucks-toolbox
 
     # Dot notation
     - match: \.
-      scope: punctuation.accessor.nunjucks
+      scope: punctuation.accessor.nunjucks-toolbox
 
     # Array/object access
     - match: \[
-      scope: punctuation.section.brackets.begin.nunjucks
+      scope: punctuation.section.brackets.begin.nunjucks-toolbox
       push:
         - match: \]
-          scope: punctuation.section.brackets.end.nunjucks
+          scope: punctuation.section.brackets.end.nunjucks-toolbox
           pop: true
         - include: nunjucks-expressions
 
   nunjucks-filter-arguments:
     - match: \(
-      scope: punctuation.section.arguments.begin.nunjucks
+      scope: punctuation.section.arguments.begin.nunjucks-toolbox
       push:
         - match: \)
-          scope: punctuation.section.arguments.end.nunjucks
+          scope: punctuation.section.arguments.end.nunjucks-toolbox
           pop: true
         - include: nunjucks-expressions
         - match: ","
-          scope: punctuation.separator.arguments.nunjucks
+          scope: punctuation.separator.arguments.nunjucks-toolbox
 
   html-content:
     # XML declaration

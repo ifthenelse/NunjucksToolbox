@@ -29,11 +29,11 @@ jobs:
         import sys
         
         try:
-            with open('Nunjucks.sublime-syntax', 'r') as f:
+            with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
                 yaml.safe_load(f)
-            print('✓ Nunjucks.sublime-syntax is valid YAML')
+            print('✓ Nunjucks-toolbox.sublime-syntax is valid YAML')
         except yaml.YAMLError as e:
-            print(f'✗ YAML syntax error in Nunjucks.sublime-syntax: {e}')
+            print(f'✗ YAML syntax error in Nunjucks-toolbox.sublime-syntax: {e}')
             sys.exit(1)
         except Exception as e:
             print(f'✗ Error reading file: {e}')
@@ -42,8 +42,8 @@ jobs:
         
     - name: Check file extensions
       run: |
-        if [ ! -f "Nunjucks.sublime-syntax" ]; then
-          echo "✗ Nunjucks.sublime-syntax file not found"
+        if [ ! -f "Nunjucks-toolbox.sublime-syntax" ]; then
+          echo "✗ Nunjucks-toolbox.sublime-syntax file not found"
           exit 1
         fi
         echo "✓ Required syntax files exist"
@@ -54,7 +54,7 @@ jobs:
         import yaml
         import sys
         
-        with open('Nunjucks.sublime-syntax', 'r') as f:
+        with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
             syntax = yaml.safe_load(f)
             
         required_keys = ['name', 'file_extensions', 'scope', 'contexts']
@@ -78,7 +78,7 @@ jobs:
         import re
         import sys
         
-        with open('Nunjucks.sublime-syntax', 'r') as f:
+        with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
             content = f.read()
             
         # Check for unescaped dots in regex patterns
