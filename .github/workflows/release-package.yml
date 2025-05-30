@@ -1,0 +1,107 @@
+name: Release Package
+
+on:
+  push:
+    tags:
+      - 'v*'
+  release:
+    types: [published]
+
+jobs:
+  package-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Extract version from tag
+      id: version
+      run: |
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/v}
+        else
+          VERSION=${GITHUB_SHA::7}
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Create package directory
+      run: |
+        mkdir -p package/Nunjucks
+        
+    - name: Copy syntax files
+      run: |
+        cp Nunjucks.sublime-syntax package/Nunjucks/
+        cp README.md package/Nunjucks/
+        
+    - name: Create package.json for Package Control
+      run: |
+        cat > package/Nunjucks/package.json << EOF
+        {
+          "name": "Nunjucks",
+          "description": "Nunjucks templating syntax for Sublime Text",
+          "version": "${{ steps.version.outputs.version }}",
+          "keywords": ["nunjucks", "template", "syntax", "highlighting"],
+          "homepage": "https://github.com/${{ github.repository }}",
+          "bugs": "https://github.com/${{ github.repository }}/issues",
+          "repository": {
+            "type": "git",
+            "url": "https://github.com/${{ github.repository }}.git"
+          },
+          "license": "MIT"
+        }
+        EOF
+        
+    - name: Create .sublime-package
+      run: |
+        cd package
+        zip -r ../Nunjucks-${{ steps.version.outputs.version }}.sublime-package Nunjucks/
+        
+    - name: Upload package to release
+      if: github.event_name == 'release'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./Nunjucks-${{ steps.version.outputs.version }}.sublime-package
+        asset_name: Nunjucks-${{ steps.version.outputs.version }}.sublime-package
+        asset_content_type: application/zip
+        
+    - name: Generate changelog
+      if: github.event_name == 'release'
+      run: |
+        echo "## Changes" > changelog.md
+        git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> changelog.md
+        
+    - name: Update README with latest version
+      run: |
+        sed -i 's/specifically for Sublime Text 2 and 3/specifically for Sublime Text 3 and 4/' README.md
+        
+    - name: Create installation instructions
+      run: |
+        cat > INSTALLATION.md << EOF
+        # Installation Instructions
+        
+        ## Via Package Control (Recommended)
+        1. Install [Package Control](https://packagecontrol.io/installation)
+        2. Open Command Palette (\`Ctrl+Shift+P\` / \`Cmd+Shift+P\`)
+        3. Run "Package Control: Install Package"
+        4. Search for "Nunjucks" and install
+        
+        ## Manual Installation
+        1. Download the latest \`.sublime-package\` from releases
+        2. Copy to your Sublime Text \`Installed Packages\` directory
+        3. Restart Sublime Text
+        
+        ## Development Installation
+        1. Clone this repository to your Sublime Text \`Packages\` directory
+        2. Restart Sublime Text
+        
+        ## File Extensions
+        The following file extensions are automatically recognized:
+        - \`.nunjucks\`
+        - \`.nunjs\`
+        - \`.njk\`
+        - \`.html\` (when containing Nunjucks syntax)
+        EOF
