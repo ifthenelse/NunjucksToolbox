@@ -37,7 +37,7 @@ jobs:
 
       - name: Test syntax files exist
         run: |
-          if [ ! -f "Nunjucks.sublime-syntax" ]; then
+          if [ ! -f "Nunjucks-toolbox.sublime-syntax" ]; then
             echo "❌ Main syntax file missing"
             exit 1
           fi
@@ -64,7 +64,7 @@ jobs:
           python3 -c "
           import yaml
 
-          with open('Nunjucks.sublime-syntax', 'r') as f:
+          with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
               syntax = yaml.safe_load(f)
               
           contexts = syntax.get('contexts', {})
@@ -75,7 +75,7 @@ jobs:
           # Check for main context which should always exist
           if 'main' not in contexts:
               print('❌ Missing main context')
-              exit(1)
+              exit 1
           else:
               print('✅ Main context found')
 
@@ -112,9 +112,9 @@ jobs:
           import sys
 
           try:
-              with open('Nunjucks.sublime-syntax', 'r') as f:
+              with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
                   yaml.safe_load(f)
-              print('✅ Nunjucks.sublime-syntax is valid YAML')
+              print('✅ Nunjucks-toolbox.sublime-syntax is valid YAML')
           except yaml.YAMLError as e:
               print(f'❌ YAML syntax error: {e}')
               sys.exit(1)
