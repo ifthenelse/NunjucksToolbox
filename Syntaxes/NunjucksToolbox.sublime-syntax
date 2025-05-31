@@ -1,6 +1,6 @@
 %YAML 1.2
 ---
-name: Nunjucks Toolbox
+name: Nunjucks
 file_extensions:
   - nunjucks
   - nunjs
