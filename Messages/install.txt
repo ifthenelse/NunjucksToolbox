@@ -1,0 +1,30 @@
+Nunjucks Toolbox v1.3.0
+========================
+
+Thank you for installing Nunjucks Toolbox! 🎉
+
+This package provides advanced Nunjucks templating support for Sublime Text with:
+
+✨ FEATURES:
+• Complete syntax highlighting for .njk, .nunjucks, .nunjs, and .html files
+• 40+ filter completions (abs, attr, batch, capitalize, center, default, etc.)
+• Smart code snippets for all major Nunjucks constructs
+• Auto-pairing for Nunjucks brackets and tags
+• Symbol navigation for blocks, macros, and variables
+• Build system for template validation
+• Intelligent indentation rules
+• Advanced editor preferences
+
+🚀 QUICK START:
+1. Open any .njk, .nunjucks, or .html file
+2. Start typing Nunjucks syntax - highlighting activates automatically
+3. Use snippets: type 'for' + Tab, 'if' + Tab, 'block' + Tab, etc.
+4. Press Ctrl+B (Cmd+B) to validate template syntax
+
+📖 DOCUMENTATION:
+• Full documentation: https://github.com/andreacollet/nunjucks-toolbox
+• Report issues: https://github.com/andreacollet/nunjucks-toolbox/issues
+
+💡 TIP: Use Ctrl+Shift+P and search "Nunjucks" to see all available commands!
+
+Happy templating! 🎨

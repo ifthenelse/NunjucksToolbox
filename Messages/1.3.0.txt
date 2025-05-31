@@ -1,0 +1,37 @@
+Nunjucks Toolbox v1.3.0 - Major Update! 🎉
+==========================================
+
+🆕 NEW FEATURES:
+• Complete filter library: Added all 40+ standard Nunjucks filters
+• Enhanced completions with parameter placeholders
+• Improved syntax highlighting with better pattern recognition
+• Advanced auto-pairing and bracket matching
+• Symbol navigation for blocks, macros, and variables
+• Build system with template validation
+• GitHub Actions CI/CD pipeline
+• Comprehensive test suite
+
+🔧 IMPROVEMENTS:
+• Better scope consistency across all files
+• Enhanced indentation rules for nested structures
+• Improved regex patterns for edge cases
+• More robust error handling in build systems
+• Updated documentation with examples
+
+📝 FILTERS ADDED:
+abs, attr, batch, capitalize, center, default, dictsort, escape, 
+filesizeformat, first, float, forceescape, format, groupby, indent, 
+int, join, last, length, list, lower, map, max, min, nl2br, random, 
+reject, rejectattr, replace, reverse, round, safe, select, selectattr, 
+slice, sort, string, striptags, sum, title, trim, truncate, unique, 
+upper, urlencode, urlize, wordcount, wordwrap, xmlattr, tojson
+
+🛠️ TECHNICAL:
+• Migrated to YAML 1.2 syntax format
+• Added comprehensive CI/CD testing
+• Improved package structure and organization
+• Enhanced error handling and validation
+
+📖 Full changelog: https://github.com/andreacollet/nunjucks-toolbox/releases
+
+Thank you for using Nunjucks Toolbox! 🙏
