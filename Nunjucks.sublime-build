@@ -1,0 +1,11 @@
+{
+    "shell_cmd": "node -e \"const nunjucks = require('nunjucks'); try { nunjucks.configure({autoescape: false}); nunjucks.renderString(require('fs').readFileSync('$file', 'utf8'), {}); console.log('✓ Template syntax valid'); } catch(e) { console.error('✗ Template error:', e.message); process.exit(1); }\"",
+    "file_regex": "^(.+?):(\\d+):(\\d+): (.+)$",
+    "selector": "text.html.nunjucks-toolbox",
+    "variants": [
+        {
+            "name": "Lint Only",
+            "shell_cmd": "node -e \"const nunjucks = require('nunjucks'); try { nunjucks.precompile('$file'); console.log('✓ Template compiles successfully'); } catch(e) { console.error('✗ Compilation error:', e.message); }\""
+        }
+    ]
+}
