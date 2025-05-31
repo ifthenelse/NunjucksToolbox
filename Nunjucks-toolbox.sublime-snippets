@@ -1,0 +1,49 @@
+{
+    "scope": "text.html.nunjucks-toolbox",
+    "completions": [
+        {
+            "trigger": "for",
+            "contents": "{% for ${1:item} in ${2:items} %}\n\t$0\n{% endfor %}"
+        },
+        {
+            "trigger": "if",
+            "contents": "{% if ${1:condition} %}\n\t$0\n{% endif %}"
+        },
+        {
+            "trigger": "ifelse",
+            "contents": "{% if ${1:condition} %}\n\t${2:content}\n{% else %}\n\t$0\n{% endif %}"
+        },
+        {
+            "trigger": "extends",
+            "contents": "{% extends \"${1:base.html}\" %}"
+        },
+        {
+            "trigger": "block",
+            "contents": "{% block ${1:name} %}\n\t$0\n{% endblock %}"
+        },
+        {
+            "trigger": "macro",
+            "contents": "{% macro ${1:name}(${2:params}) %}\n\t$0\n{% endmacro %}"
+        },
+        {
+            "trigger": "set",
+            "contents": "{% set ${1:variable} = ${2:value} %}"
+        },
+        {
+            "trigger": "include",
+            "contents": "{% include \"${1:template.html}\" %}"
+        },
+        {
+            "trigger": "comment",
+            "contents": "{# ${1:comment} #}"
+        },
+        {
+            "trigger": "var",
+            "contents": "{{ ${1:variable} }}"
+        },
+        {
+            "trigger": "filter",
+            "contents": "{{ ${1:variable} | ${2:filter} }}"
+        }
+    ]
+}
