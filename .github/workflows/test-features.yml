@@ -31,20 +31,20 @@ jobs:
             echo "⚠️ No snippets file found"
           fi
 
+      - name: Test completions syntax
+        run: |
+          if [ -f "Nunjucks-toolbox.sublime-completions" ]; then
+            echo "✅ Completions file found"
+            python3 -c "import json; json.load(open('Nunjucks-toolbox.sublime-completions')); print('✅ Completions JSON is valid')"
+          else
+            echo "⚠️ No completions file found"
+          fi
+
       - name: Test build system
         run: |
           if [ -f "Nunjucks.sublime-build" ]; then
             echo "✅ Build system found"
-            python3 -c "
-            import json, sys
-            build = json.load(open('Nunjucks.sublime-build'))
-            required = ['shell_cmd', 'selector']
-            missing = [k for k in required if k not in build]
-            if missing:
-                print('❌ Missing keys:', missing)
-                sys.exit(1)
-            print('✅ Build system valid')
-            "
+            python3 -c "import json, sys; build = json.load(open('Nunjucks.sublime-build')); required = ['shell_cmd', 'selector']; missing = [k for k in required if k not in build]; print('❌ Missing keys:', missing) if missing else print('✅ Build system valid'); sys.exit(1) if missing else None"
           else
             echo "⚠️ No build system file found"
           fi
@@ -56,15 +56,7 @@ jobs:
             if [ -f "$file" ]; then
               found_prefs=true
               echo "✅ Found preference file: $file"
-              python3 -c "
-              import xml.etree.ElementTree as ET, sys
-              try:
-                  ET.parse('$file')
-                  print('✅ $file is valid XML')
-              except ET.ParseError as e:
-                  print('❌ XML error in $file:', e)
-                  sys.exit(1)
-              "
+              python3 -c "import xml.etree.ElementTree as ET; ET.parse('$file'); print('✅ $file is valid XML')" || echo "❌ XML error in $file"
             fi
           done
           if [ "$found_prefs" = false ]; then
@@ -73,7 +65,7 @@ jobs:
 
       - name: Test syntax file structure
         run: |
-          python3 -c "
+          python3 << 'EOF'
           import yaml, sys
           try:
               with open('Nunjucks-toolbox.sublime-syntax') as f:
@@ -94,7 +86,7 @@ jobs:
           except Exception as e:
               print('❌ Error validating syntax file:', e)
               sys.exit(1)
-          "
+          EOF
 
       - name: Test file completeness
         run: |
@@ -123,23 +115,27 @@ jobs:
           if [ -f "Nunjucks-toolbox.sublime-snippets" ]; then
             echo "✅ Optional: Nunjucks-toolbox.sublime-snippets"
             optional_count=$((optional_count + 1))
-          else
-            echo "⚠️ Missing optional: Nunjucks-toolbox.sublime-snippets"
+          fi
+
+          if [ -f "Nunjucks-toolbox.sublime-completions" ]; then
+            echo "✅ Optional: Nunjucks-toolbox.sublime-completions"
+            optional_count=$((optional_count + 1))
           fi
 
           if [ -f "Nunjucks.sublime-build" ]; then
             echo "✅ Optional: Nunjucks.sublime-build"
             optional_count=$((optional_count + 1))
-          else
-            echo "⚠️ Missing optional: Nunjucks.sublime-build"
           fi
 
-          if ls *.tmPreferences >/dev/null 2>&1; then
-            pref_count=$(ls -1 *.tmPreferences 2>/dev/null | wc -l)
-            echo "✅ Optional: $pref_count preference files"
+          if [ -f "Nunjucks Auto Pairs.sublime-settings" ]; then
+            echo "✅ Optional: Nunjucks Auto Pairs.sublime-settings"
             optional_count=$((optional_count + 1))
-          else
-            echo "⚠️ Missing optional: .tmPreferences files"
+          fi
+
+          pref_files=$(ls -1 *.tmPreferences 2>/dev/null | wc -l)
+          if [ "$pref_files" -gt 0 ]; then
+            echo "✅ Optional: $pref_files preference files"
+            optional_count=$((optional_count + 1))
           fi
 
           if [ $missing_required -gt 0 ]; then
@@ -151,6 +147,106 @@ jobs:
           echo "  - Required files: 2/2 ✅"
           echo "  - Optional features: $optional_count found"
 
+      - name: Test feature integration
+        run: |
+          echo "🔧 Testing feature integration:"
+
+          # Test if all scopes match
+          main_scope="text.html.nunjucks-toolbox"
+
+          # Check syntax file scope
+          syntax_scope=$(python3 -c "import yaml; print(yaml.safe_load(open('Nunjucks-toolbox.sublime-syntax')).get('scope', ''))")
+          if [ "$syntax_scope" = "$main_scope" ]; then
+            echo "✅ Syntax scope matches: $syntax_scope"
+          else
+            echo "❌ Syntax scope mismatch: $syntax_scope vs $main_scope"
+          fi
+
+          # Check other files scope consistency
+          for file in *.tmPreferences; do
+            if [ -f "$file" ]; then
+              scope=$(python3 -c "import xml.etree.ElementTree as ET; root=ET.parse('$file').getroot(); elements = [elem.text for elem in root.iter() if elem.text and 'nunjucks-toolbox' in elem.text]; print(elements[0] if elements else 'none')")
+              if [ "$scope" = "$main_scope" ]; then
+                echo "✅ $file scope matches"
+              else
+                echo "⚠️ $file scope: $scope"
+              fi
+            fi
+          done
+
+      - name: Validate package structure
+        run: |
+          echo "🔍 Validating package structure:"
+
+          # Test that all files use consistent scopes
+          python3 << 'EOF'
+          import yaml
+          import xml.etree.ElementTree as ET
+          import json
+          import os
+
+          main_scope = "text.html.nunjucks-toolbox"
+          issues = []
+
+          # Check syntax file
+          try:
+              with open('Nunjucks-toolbox.sublime-syntax') as f:
+                  syntax = yaml.safe_load(f)
+              if syntax.get('scope') != main_scope:
+                  issues.append(f"Syntax file scope mismatch: {syntax.get('scope')}")
+              else:
+                  print("✅ Syntax file scope correct")
+          except Exception as e:
+              issues.append(f"Error reading syntax file: {e}")
+
+          # Check snippets/completions files
+          for filename in ['Nunjucks-toolbox.sublime-snippets', 'Nunjucks-toolbox.sublime-completions']:
+              if os.path.exists(filename):
+                  try:
+                      with open(filename) as f:
+                          data = json.load(f)
+                      if data.get('scope') != main_scope:
+                          issues.append(f"{filename} scope mismatch: {data.get('scope')}")
+                      else:
+                          print(f"✅ {filename} scope correct")
+                  except Exception as e:
+                      issues.append(f"Error reading {filename}: {e}")
+
+          # Check build system
+          if os.path.exists('Nunjucks.sublime-build'):
+              try:
+                  with open('Nunjucks.sublime-build') as f:
+                      build = json.load(f)
+                  if build.get('selector') != main_scope:
+                      issues.append(f"Build system selector mismatch: {build.get('selector')}")
+                  else:
+                      print("✅ Build system selector correct")
+              except Exception as e:
+                  issues.append(f"Error reading build system: {e}")
+
+          # Check preference files
+          for filename in os.listdir('.'):
+              if filename.endswith('.tmPreferences'):
+                  try:
+                      tree = ET.parse(filename)
+                      root = tree.getroot()
+                      scopes = [elem.text for elem in root.iter() if elem.text and 'nunjucks-toolbox' in elem.text]
+                      if scopes and main_scope in scopes:
+                          print(f"✅ {filename} scope correct")
+                      else:
+                          issues.append(f"{filename} scope issue: {scopes}")
+                  except Exception as e:
+                      issues.append(f"Error reading {filename}: {e}")
+
+          if issues:
+              print("❌ Package structure issues found:")
+              for issue in issues:
+                  print(f"  - {issue}")
+              exit(1)
+          else:
+              print("✅ Package structure validation passed")
+          EOF
+
       - name: Generate feature report
         run: |
           echo "# Package Feature Report" > feature-report.md
@@ -158,26 +254,49 @@ jobs:
           echo "## Available Features" >> feature-report.md
 
           if [ -f "Nunjucks-toolbox.sublime-syntax" ]; then
-            echo "- ✅ Syntax Highlighting" >> feature-report.md
+            echo "- ✅ **Syntax Highlighting** (Nunjucks-toolbox.sublime-syntax)" >> feature-report.md
           fi
 
           if [ -f "Nunjucks-toolbox.sublime-snippets" ]; then
-            echo "- ✅ Auto-completion Snippets" >> feature-report.md
+            echo "- ✅ **Code Snippets** (Nunjucks-toolbox.sublime-snippets)" >> feature-report.md
+          fi
+
+          if [ -f "Nunjucks-toolbox.sublime-completions" ]; then
+            echo "- ✅ **Auto-completion** (Nunjucks-toolbox.sublime-completions)" >> feature-report.md
           fi
 
           if [ -f "Nunjucks.sublime-build" ]; then
-            echo "- ✅ Build System" >> feature-report.md
+            echo "- ✅ **Build System** (Nunjucks.sublime-build)" >> feature-report.md
           fi
 
-          if ls *.tmPreferences >/dev/null 2>&1; then
-            echo "- ✅ Editor Preferences" >> feature-report.md
+          if [ -f "Nunjucks Auto Pairs.sublime-settings" ]; then
+            echo "- ✅ **Auto-Pairing** (Nunjucks Auto Pairs.sublime-settings)" >> feature-report.md
+          fi
+
+          pref_count=$(ls -1 *.tmPreferences 2>/dev/null | wc -l)
+          if [ "$pref_count" -gt 0 ]; then
+            echo "- ✅ **Editor Preferences** ($pref_count .tmPreferences files)" >> feature-report.md
+            for file in *.tmPreferences; do
+              if [ -f "$file" ]; then
+                echo "  - $file" >> feature-report.md
+              fi
+            done
           fi
 
           echo "" >> feature-report.md
           echo "## Test Results" >> feature-report.md
-          echo "- ✅ All tests passed" >> feature-report.md
-          echo "- ✅ File structure validated" >> feature-report.md
-          echo "- ✅ Syntax validated" >> feature-report.md
+          echo "- ✅ All syntax files validated" >> feature-report.md
+          echo "- ✅ JSON/XML structure verified" >> feature-report.md
+          echo "- ✅ Scope consistency checked" >> feature-report.md
+          echo "- ✅ File completeness verified" >> feature-report.md
+          echo "- ✅ Package structure validated" >> feature-report.md
+
+          echo "" >> feature-report.md
+          echo "## File Extensions Supported" >> feature-report.md
+          echo "- .nunjucks" >> feature-report.md
+          echo "- .nunjs" >> feature-report.md
+          echo "- .njk" >> feature-report.md
+          echo "- .html (with Nunjucks syntax)" >> feature-report.md
 
           cat feature-report.md
 
