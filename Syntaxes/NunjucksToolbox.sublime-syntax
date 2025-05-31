@@ -12,7 +12,7 @@ scope: text.html.nunjucks-toolbox
 variables:
   nunjucks_tags: (?:autoescape|endautoescape|block|endblock|extends|include|import|from|macro|endmacro|call|endcall|filter|endfilter|set|if|elif|else|endif|for|endfor|asyncEach|endasyncEach|asyncAll|endasyncAll|while|endwhile|break|continue|raw|endraw|verbatim|endverbatim|with|endwith|without|endwithout)
   nunjucks_operators: (?:and|or|not|in|is|if|else)
-  nunjucks_filters: (?:abs|batch|capitalize|center|default|dictsort|escape|e|filesizeformat|first|float|forceescape|groupby|indent|int|join|last|length|list|lower|nl2br|random|reject|rejectattr|replace|reverse|round|safe|select|selectattr|slice|sort|string|striptags|sum|title|trim|truncate|upper|urlencode|urlize|wordcount|xmlattr|tojson)
+  nunjucks_filters: (?:abs|attr|batch|capitalize|center|default|dictsort|escape|e|filesizeformat|first|float|forceescape|format|groupby|indent|int|join|last|length|list|lower|map|max|min|nl2br|random|reject|rejectattr|replace|reverse|round|safe|select|selectattr|slice|sort|string|striptags|sum|title|trim|truncate|unique|upper|urlencode|urlize|wordcount|wordwrap|xmlattr|tojson)
 
 contexts:
   main:

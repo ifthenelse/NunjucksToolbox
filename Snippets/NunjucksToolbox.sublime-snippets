@@ -44,6 +44,38 @@
         {
             "trigger": "filter",
             "contents": "{{ ${1:variable} | ${2:filter} }}"
+        },
+        {
+            "trigger": "defaultfilter",
+            "contents": "{{ ${1:variable} | default(${2:\"default_value\"}) }}"
+        },
+        {
+            "trigger": "joinfilter",
+            "contents": "{{ ${1:array} | join(${2:\", \"}) }}"
+        },
+        {
+            "trigger": "lengthfilter",
+            "contents": "{{ ${1:variable} | length }}"
+        },
+        {
+            "trigger": "upperfilter",
+            "contents": "{{ ${1:variable} | upper }}"
+        },
+        {
+            "trigger": "lowerfilter",
+            "contents": "{{ ${1:variable} | lower }}"
+        },
+        {
+            "trigger": "titlefilter",
+            "contents": "{{ ${1:variable} | title }}"
+        },
+        {
+            "trigger": "truncatefilter",
+            "contents": "{{ ${1:variable} | truncate(${2:50}) }}"
+        },
+        {
+            "trigger": "replacefilter",
+            "contents": "{{ ${1:variable} | replace(${2:\"old\"}, ${3:\"new\"}) }}"
         }
     ]
 }
