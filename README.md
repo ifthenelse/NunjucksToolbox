@@ -60,10 +60,10 @@ Press `Ctrl+B`/`Cmd+B` to validate template syntax using Node.js.
 ```
 Syntaxes/           # Syntax definitions
 Completions/        # Auto-completion files
+Snippets/           # Code snippets
 Settings/           # Package settings
 Preferences/        # Editor preferences
-Build Systems/      # Build system definitions
-Tests/              # Syntax tests
+BuildSystems/       # Build system definitions
 ```
 
 ## Contributing
