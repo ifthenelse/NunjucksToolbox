@@ -1,0 +1,48 @@
+name: Release Nunjucks Toolbox
+
+on:
+  push:
+    tags: ["v*"]
+  release:
+    types: [published]
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+      - name: Create package
+        run: |
+          mkdir -p package/"Nunjucks Toolbox"
+          
+          # Copy organized structure
+          cp -r Syntaxes package/"Nunjucks Toolbox"/
+          cp -r Completions package/"Nunjucks Toolbox"/
+          cp -r Settings package/"Nunjucks Toolbox"/
+          cp -r Preferences package/"Nunjucks Toolbox"/
+          cp -r "Build Systems" package/"Nunjucks Toolbox"/
+          cp README.md package/"Nunjucks Toolbox"/
+          cp LICENSE package/"Nunjucks Toolbox"/
+          cp package.json package/"Nunjucks Toolbox"/
+          
+          # Create package
+          cd package
+          zip -r "../Nunjucks-Toolbox-${{ steps.version.outputs.version }}.sublime-package" "Nunjucks Toolbox"/
+          
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./Nunjucks-Toolbox-${{ steps.version.outputs.version }}.sublime-package
+          asset_name: Nunjucks-Toolbox-${{ steps.version.outputs.version }}.sublime-package
+          asset_content_type: application/zip
