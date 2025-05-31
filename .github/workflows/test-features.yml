@@ -1,0 +1,65 @@
+name: Test Package Features
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test-features:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Test snippet syntax
+        run: |
+          if [ -f "Nunjucks-toolbox.sublime-snippets" ]; then
+            echo "✅ Snippets file found"
+            # Validate JSON syntax
+            python3 -c "
+            import json
+            with open('Nunjucks-toolbox.sublime-snippets', 'r') as f:
+                json.load(f)
+            print('✅ Snippets JSON is valid')
+            "
+          else
+            echo "⚠️ No snippets file found"
+          fi
+
+      - name: Test build system
+        run: |
+          if [ -f "Nunjucks.sublime-build" ]; then
+            echo "✅ Build system found"
+            python3 -c "
+            import json
+            with open('Nunjucks.sublime-build', 'r') as f:
+                build = json.load(f)
+            required_keys = ['shell_cmd', 'selector']
+            missing = [k for k in required_keys if k not in build]
+            if missing:
+                print(f'❌ Missing build system keys: {missing}')
+                exit(1)
+            print('✅ Build system configuration valid')
+            "
+          fi
+
+      - name: Test preference files
+        run: |
+          for file in *.tmPreferences; do
+            if [ -f "$file" ]; then
+              echo "✅ Found preference file: $file"
+              # Basic XML validation
+              python3 -c "
+              import xml.etree.ElementTree as ET
+              try:
+                  ET.parse('$file')
+                  print('✅ $file is valid XML')
+              except ET.ParseError as e:
+                  print('❌ XML error in $file:', e)
+                  exit(1)
+              "
+            fi
+          done
