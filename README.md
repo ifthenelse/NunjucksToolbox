@@ -1,90 +1,79 @@
-# Nunjucks-toolbox
+# Nunjucks Toolbox for Sublime Text
 
-A [Nunjucks](https://mozilla.github.io/nunjucks/) syntax definition for Sublime Text 3 and 4.
+An advanced [Nunjucks](https://mozilla.github.io/nunjucks/) templating syntax package for Sublime Text 3 & 4.
+
+> **Note**: This is "Nunjucks Toolbox" - a comprehensive package with enhanced features. There's also a separate "Nunjucks" package available.
 
 ## Features
 
-- 🎨 **Syntax Highlighting** - Full Nunjucks template syntax support
-- 🏷️ **Multiple Extensions** - Supports `.nunjucks`, `.nunjs`, `.njk`, and `.html` files
-- 🔧 **Template Tags** - Complete support for all Nunjucks control structures
-- 🎯 **Filters** - Built-in filter highlighting and completion
-- 💬 **Comments** - Both line and block comment support
-- 🌐 **HTML Integration** - Seamless integration with HTML syntax
-- ⚡ **Performance** - Optimized for large template files
+- 🎨 **Complete Syntax Highlighting** - Advanced Nunjucks template syntax support
+- 📝 **Smart Completions** - Auto-completion for tags, filters, and structures
+- 🏷️ **Multiple File Extensions** - `.nunjucks`, `.nunjs`, `.njk`, `.html`
+- 🔧 **Build System** - Template validation and linting
+- ⚡ **Auto-Pairing** - Intelligent bracket matching
+- 💬 **Comment Support** - Line and block comments
+- 🎯 **Symbol Navigation** - Jump to blocks, macros, and variables
+- 🛠️ **Enhanced Toolbox** - Additional developer productivity features
 
 ## Installation
 
-### Via Package Control (Recommended)
+### Package Control (Recommended)
+
 1. Install [Package Control](https://packagecontrol.io/installation)
-2. Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+2. Open Command Palette (`Ctrl+Shift+P`/`Cmd+Shift+P`)
 3. Run "Package Control: Install Package"
-4. Search for "Nunjucks-toolbox" and install
+4. Search for "Nunjucks Toolbox" and install
 
 ### Manual Installation
-1. Download the latest release from [GitHub Releases](https://github.com/andreacollet/nunjucks-toolbox/releases)
-2. Extract to your Sublime Text `Packages` directory
+
+1. Download the latest release
+2. Extract to your Sublime Text `Packages/Nunjucks Toolbox` directory
 3. Restart Sublime Text
 
-## Supported File Extensions
+## Usage
 
-The syntax automatically activates for files with these extensions:
-- `.nunjucks`
-- `.nunjs` 
-- `.njk`
-- `.html` (when containing Nunjucks syntax)
+The syntax automatically activates for:
 
-## Syntax Examples
+- `.nunjucks` files
+- `.nunjs` files
+- `.njk` files
+- `.html` files with Nunjucks syntax
 
-### Variables and Filters
-```nunjucks
-{{ title | default("Welcome") | upper }}
-{{ user.name | capitalize }}
-{{ items | length }}
+### Snippets
+
+Type these triggers and press `Tab`:
+
+| Trigger   | Description          | Output                                      |
+| --------- | -------------------- | ------------------------------------------- |
+| `for`     | For loop             | `{% for item in items %}...{% endfor %}`    |
+| `if`      | If statement         | `{% if condition %}...{% endif %}`          |
+| `block`   | Template block       | `{% block name %}...{% endblock %}`         |
+| `macro`   | Macro definition     | `{% macro name(params) %}...{% endmacro %}` |
+| `extends` | Template inheritance | `{% extends "base.html" %}`                 |
+
+### Build System
+
+Press `Ctrl+B`/`Cmd+B` to validate template syntax using Node.js.
+
+## Project Structure
+
 ```
-
-### Control Structures
-```nunjucks
-{% if user.isActive %}
-    <p>Welcome back, {{ user.name }}!</p>
-{% else %}
-    <p>Please log in.</p>
-{% endif %}
-
-{% for item in items %}
-    <li>{{ item.title }}</li>
-{% endfor %}
-```
-
-### Template Inheritance
-```nunjucks
-{% extends "base.html" %}
-{% block content %}
-    <h1>{{ page.title }}</h1>
-{% endblock %}
-```
-
-### Macros
-```nunjucks
-{% macro renderField(name, value="", type="text") %}
-    <input type="{{ type }}" name="{{ name }}" value="{{ value }}">
-{% endmacro %}
-
-{{ renderField("email", user.email, "email") }}
-```
-
-### Comments
-```nunjucks
-{# This is a line comment #}
-{% comment %}
-This is a 
-block comment
-{% endcomment %}
+Syntaxes/           # Syntax definitions
+Completions/        # Auto-completion files
+Settings/           # Package settings
+Preferences/        # Editor preferences
+Build Systems/      # Build system definitions
+Tests/              # Syntax tests
 ```
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
 ## License
 
-This project is licensed under the MIT License.
+MIT License - see [LICENSE](LICENSE) file for details.
