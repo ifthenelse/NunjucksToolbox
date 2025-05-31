@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>name</key>
+    <string>Indentation Rules</string>
+    <key>scope</key>
+    <string>text.html.nunjucks-toolbox</string>
+    <key>settings</key>
+    <dict>
+        <key>increaseIndentPattern</key>
+        <string>(?x)
+            ^\s*
+            (?:
+                (?:
+                    {%\s*(?:if|for|macro|block|filter|call|with|without|autoescape)\b
+                    |{%\s*elif\b
+                )
+                (?!.*{%\s*end\w+\s*%})
+            )
+        </string>
+        <key>decreaseIndentPattern</key>
+        <string>(?x)
+            ^\s*
+            (?:
+                {%\s*(?:endif|endfor|endmacro|endblock|endfilter|endcall|endwith|endwithout|endautoescape|else|elif)\b
+            )
+        </string>
+    </dict>
+</dict>
+</plist>
