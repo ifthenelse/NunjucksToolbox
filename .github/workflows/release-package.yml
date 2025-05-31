@@ -24,15 +24,34 @@ jobs:
             VERSION=${GITHUB_SHA::7}
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
 
       - name: Create package directory
         run: |
           mkdir -p package/Nunjucks-toolbox
+          echo "Package directory created"
 
-      - name: Copy syntax files
+      - name: Copy essential files
         run: |
+          # Copy required files
           cp Nunjucks-toolbox.sublime-syntax package/Nunjucks-toolbox/
           cp README.md package/Nunjucks-toolbox/
+          
+          # Copy optional files if they exist
+          [ -f "Nunjucks-toolbox.sublime-snippets" ] && cp Nunjucks-toolbox.sublime-snippets package/Nunjucks-toolbox/
+          [ -f "Nunjucks-toolbox.sublime-completions" ] && cp Nunjucks-toolbox.sublime-completions package/Nunjucks-toolbox/
+          [ -f "Nunjucks.sublime-build" ] && cp Nunjucks.sublime-build package/Nunjucks-toolbox/
+          [ -f "Nunjucks Auto Pairs.sublime-settings" ] && cp "Nunjucks Auto Pairs.sublime-settings" package/Nunjucks-toolbox/
+          
+          # Copy preference files
+          for file in *.tmPreferences; do
+            if [ -f "$file" ]; then
+              cp "$file" package/Nunjucks-toolbox/
+            fi
+          done
+          
+          echo "Files copied to package directory:"
+          ls -la package/Nunjucks-toolbox/
 
       - name: Create package.json for Package Control
         run: |
@@ -51,11 +70,16 @@ jobs:
             "license": "MIT"
           }
           EOF
+          echo "package.json created"
 
       - name: Create .sublime-package
         run: |
           cd package
-          zip -r ../Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package Nunjucks-toolbox/
+          zip -r "Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package" Nunjucks-toolbox/
+          mv "Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package" ../
+          cd ..
+          echo "Package created: Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package"
+          ls -la *.sublime-package
 
       - name: Upload package to release
         if: github.event_name == 'release'
@@ -68,40 +92,53 @@ jobs:
           asset_name: Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package
           asset_content_type: application/zip
 
+      - name: Generate package info
+        run: |
+          echo "# Package Information" > package-info.md
+          echo "" >> package-info.md
+          echo "**Version:** ${{ steps.version.outputs.version }}" >> package-info.md
+          echo "**Package Size:** $(du -h Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package | cut -f1)" >> package-info.md
+          echo "" >> package-info.md
+          echo "## Package Contents" >> package-info.md
+          echo "\`\`\`" >> package-info.md
+          unzip -l "Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package" >> package-info.md
+          echo "\`\`\`" >> package-info.md
+          
+          cat package-info.md
+
+      - name: Upload package info
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-info-${{ steps.version.outputs.version }}
+          path: |
+            Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package
+            package-info.md
+
       - name: Generate changelog
         if: github.event_name == 'release'
         run: |
-          echo "## Changes" > changelog.md
-          git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> changelog.md
-
-      - name: Update README with latest version
-        run: |
-          sed -i 's/specifically for Sublime Text 2 and 3/specifically for Sublime Text 3 and 4/' README.md
-
-      - name: Create installation instructions
-        run: |
-          cat > INSTALLATION.md << EOF
-          # Installation Instructions
-
-          ## Via Package Control (Recommended)
-          1. Install [Package Control](https://packagecontrol.io/installation)
-          2. Open Command Palette (\`Ctrl+Shift+P\` / \`Cmd+Shift+P\`)
-          3. Run "Package Control: Install Package"
-          4. Search for "Nunjucks-toolbox" and install
-
-          ## Manual Installation
-          1. Download the latest \`.sublime-package\` from releases
-          2. Copy to your Sublime Text \`Installed Packages\` directory
-          3. Restart Sublime Text
-
-          ## Development Installation
-          1. Clone this repository to your Sublime Text \`Packages\` directory
-          2. Restart Sublime Text
-
-          ## File Extensions
-          The following file extensions are automatically recognized:
-          - \`.nunjucks\`
-          - \`.nunjs\`
-          - \`.njk\`
-          - \`.html\` (when containing Nunjucks syntax)
-          EOF
+          echo "## Changes in ${{ steps.version.outputs.version }}" > changelog.md
+          
+          # Get previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -n "$PREV_TAG" ]; then
+            echo "" >> changelog.md
+            echo "### Commits since $PREV_TAG:" >> changelog.md
+            git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD >> changelog.md
+          else
+            echo "" >> changelog.md
+            echo "### All commits:" >> changelog.md
+            git log --pretty=format:"- %s (%h)" >> changelog.md
+          fi
+          
+          echo "" >> changelog.md
+          echo "### Package Features:" >> changelog.md
+          echo "- ✅ Syntax Highlighting ([Nunjucks-toolbox.sublime-syntax](Nunjucks-toolbox.sublime-syntax))" >> changelog.md
+          echo "- ✅ Code Snippets ([Nunjucks-toolbox.sublime-snippets](Nunjucks-toolbox.sublime-snippets))" >> changelog.md
+          echo "- ✅ Auto-completion ([Nunjucks-toolbox.sublime-completions](Nunjucks-toolbox.sublime-completions))" >> changelog.md
+          echo "- ✅ Build System ([Nunjucks.sublime-build](Nunjucks.sublime-build))" >> changelog.md
+          echo "- ✅ Auto-Pairing ([Nunjucks Auto Pairs.sublime-settings](Nunjucks Auto Pairs.sublime-settings))" >> changelog.md
+          echo "- ✅ Editor Preferences (3 .tmPreferences files)" >> changelog.md
+          
+          cat changelog.md
