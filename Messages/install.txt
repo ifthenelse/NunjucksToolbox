@@ -22,8 +22,8 @@ This package provides advanced Nunjucks templating support for Sublime Text with
 4. Press Ctrl+B (Cmd+B) to validate template syntax
 
 📖 DOCUMENTATION:
-• Full documentation: https://github.com/andreacollet/nunjucks-toolbox
-• Report issues: https://github.com/andreacollet/nunjucks-toolbox/issues
+• Full documentation: https://github.com/ifthenelse/NunjucksToolbox
+• Report issues: https://github.com/ifthenelse/NunjucksToolbox/issues
 
 💡 TIP: Use Ctrl+Shift+P and search "Nunjucks" to see all available commands!
 

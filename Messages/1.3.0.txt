@@ -32,6 +32,6 @@ upper, urlencode, urlize, wordcount, wordwrap, xmlattr, tojson
 • Improved package structure and organization
 • Enhanced error handling and validation
 
-📖 Full changelog: https://github.com/andreacollet/nunjucks-toolbox/releases
+📖 Full changelog: https://github.com/ifthenelse/NunjucksToolbox/releases
 
 Thank you for using Nunjucks Toolbox! 🙏
