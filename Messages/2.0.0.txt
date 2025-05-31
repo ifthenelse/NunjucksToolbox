@@ -1,0 +1,10 @@
+Nunjucks Toolbox v2.0.0 - Release Notes
+=====================================================
+
+🆕 WHAT'S NEW:
+• **Unified Release Workflow** - Consolidated multiple redundant release workflows into a single comprehensive Release workflow • **Manual Release Control** - Removed automatic tag-triggered releases, now only manual workflow dispatch for better control • **Automated Version Management** - Release workflow automatically updates package.json, README.md, and Messages/install.txt with new version numbers • **Concise Release Notes** - Changed Messages/<version>.txt files to contain only new changes instead of repeating full feature lists • **GitHub URL Corrections** - Updated all GitHub URLs from andreacollet to ifthenelse username across all files • **Enhanced Changelog Generation** - Improved automatic changelog creation from git commits with better filtering • **Streamlined Package Creation** - Consolidated package creation logic with proper validation and structure • **Breaking Changes Support** - Added optional breaking changes input field for releases • **README Feature Integration** - New features can be automatically added to README.md during release process • **Improved File Organization** - Fixed messages.json to reference Messages/ directory (capital M) instead of messages/ • **JSON Validation Enhancement** - Enhanced CI validation with better error reporting for JSON syntax issues • **Workflow Consolidation** - Removed redundant workflows (release-package.yml) and integrated validation into main release process • **Version Consistency Checks** - Added validation to ensure version numbers match across package.json and git tags • **Artifact Management** - Improved release artifact uploading and organization • **Documentation Updates** - Enhanced workflow documentation and error messages for better developer experience
+
+📖 Full documentation: https://github.com/ifthenelse/NunjucksToolbox
+🐛 Report issues: https://github.com/ifthenelse/NunjucksToolbox/issues
+
+Released on 2025-05-31
