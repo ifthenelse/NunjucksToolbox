@@ -2,67 +2,67 @@
     "scope": "text.html.nunjucks-toolbox",
     "completions": [
         {
-            "trigger": "for\tNunjucks for loop",
+            "trigger": "for\tNunjucks Toolbox for loop",
             "contents": "{% for ${1:item} in ${2:items} %}\n\t$0\n{% endfor %}"
         },
         {
-            "trigger": "if\tNunjucks if statement",
+            "trigger": "if\tNunjucks Toolbox if statement",
             "contents": "{% if ${1:condition} %}\n\t$0\n{% endif %}"
         },
         {
-            "trigger": "ifelse\tNunjucks if-else",
+            "trigger": "ifelse\tNunjucks Toolbox if-else",
             "contents": "{% if ${1:condition} %}\n\t${2:content}\n{% else %}\n\t$0\n{% endif %}"
         },
         {
-            "trigger": "extends\tNunjucks extends",
+            "trigger": "extends\tNunjucks Toolbox extends",
             "contents": "{% extends \"${1:base.html}\" %}"
         },
         {
-            "trigger": "block\tNunjucks block",
+            "trigger": "block\tNunjucks Toolbox block",
             "contents": "{% block ${1:name} %}\n\t$0\n{% endblock %}"
         },
         {
-            "trigger": "macro\tNunjucks macro",
+            "trigger": "macro\tNunjucks Toolbox macro",
             "contents": "{% macro ${1:name}(${2:params}) %}\n\t$0\n{% endmacro %}"
         },
         {
-            "trigger": "set\tNunjucks variable",
+            "trigger": "set\tNunjucks Toolbox variable",
             "contents": "{% set ${1:variable} = ${2:value} %}"
         },
         {
-            "trigger": "include\tNunjucks include",
+            "trigger": "include\tNunjucks Toolbox include",
             "contents": "{% include \"${1:template.html}\" %}"
         },
         {
-            "trigger": "comment\tNunjucks comment",
+            "trigger": "comment\tNunjucks Toolbox comment",
             "contents": "{# ${1:comment} #}"
         },
         {
-            "trigger": "var\tNunjucks variable output",
+            "trigger": "var\tNunjucks Toolbox variable output",
             "contents": "{{ ${1:variable} }}"
         },
         {
-            "trigger": "filter\tNunjucks filter",
+            "trigger": "filter\tNunjucks Toolbox filter",
             "contents": "{{ ${1:variable} | ${2:filter} }}"
         },
         {
-            "trigger": "elif\tNunjucks elif",
+            "trigger": "elif\tNunjucks Toolbox elif",
             "contents": "{% elif ${1:condition} %}"
         },
         {
-            "trigger": "else\tNunjucks else",
+            "trigger": "else\tNunjucks Toolbox else",
             "contents": "{% else %}"
         },
         {
-            "trigger": "raw\tNunjucks raw block",
+            "trigger": "raw\tNunjucks Toolbox raw block",
             "contents": "{% raw %}\n\t$0\n{% endraw %}"
         },
         {
-            "trigger": "import\tNunjucks import",
+            "trigger": "import\tNunjucks Toolbox import",
             "contents": "{% import \"${1:macros.html}\" as ${2:macros} %}"
         },
         {
-            "trigger": "from\tNunjucks from import",
+            "trigger": "from\tNunjucks Toolbox from import",
             "contents": "{% from \"${1:macros.html}\" import ${2:macro} %}"
         }
     ]
