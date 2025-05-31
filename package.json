@@ -1,0 +1,29 @@
+{
+  "name": "Nunjucks Toolbox",
+  "version": "2.0.0",
+  "description": "Advanced Nunjucks templating syntax package for Sublime Text",
+  "keywords": [
+    "nunjucks",
+    "template",
+    "syntax",
+    "highlighting",
+    "sublime text",
+    "development"
+  ],
+  "homepage": "https://github.com/andreacollet/nunjucks-toolbox",
+  "bugs": "https://github.com/andreacollet/nunjucks-toolbox/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andreacollet/nunjucks-toolbox.git"
+  },
+  "license": "MIT",
+  "author": "Andrea Collet",
+  "main": "Syntaxes/NunjucksToolbox.sublime-syntax",
+  "files": [
+    "Syntaxes/",
+    "Completions/",
+    "Settings/",
+    "Preferences/",
+    "Build Systems/"
+  ]
+}
