@@ -6,18 +6,19 @@
   "match_brackets_braces": true,
   "match_brackets_angle": false,
   "match_tags": true,
-
   "auto_complete_triggers": [
-    {
-      "selector": "text.html.nunjucks-toolbox",
-      "characters": "{%"
-    },
-    {
-      "selector": "text.html.nunjucks-toolbox",
-      "characters": "{{"
-    }
+    { "selector": "text.html.nunjucks", "characters": "{%" },
+    { "selector": "text.html.nunjucks", "characters": "{{" },
+    { "selector": "text.html.nunjucks", "characters": "|" }
   ],
-
   "auto_close_tags": true,
-  "shift_tab_unindent": true
+  "shift_tab_unindent": true,
+  "extensions": ["njk", "nunjucks", "html", "htm"],
+  "word_separators": "./\\()\"'-:,.;<>~!@#$%^&*|+=[]{}`~?",
+  "bracket_highlighter.tag_options": {
+    "nunjucks": {
+      "style": "default",
+      "type": ["cfml", "html", "angle"]
+    }
+  }
 }

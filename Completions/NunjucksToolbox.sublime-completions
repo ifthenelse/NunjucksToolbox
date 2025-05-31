@@ -1,69 +1,285 @@
 {
-    "scope": "text.html.nunjucks-toolbox",
-    "completions": [
-        {
-            "trigger": "for\tNunjucks Toolbox for loop",
-            "contents": "{% for ${1:item} in ${2:items} %}\n\t$0\n{% endfor %}"
-        },
-        {
-            "trigger": "if\tNunjucks Toolbox if statement",
-            "contents": "{% if ${1:condition} %}\n\t$0\n{% endif %}"
-        },
-        {
-            "trigger": "ifelse\tNunjucks Toolbox if-else",
-            "contents": "{% if ${1:condition} %}\n\t${2:content}\n{% else %}\n\t$0\n{% endif %}"
-        },
-        {
-            "trigger": "extends\tNunjucks Toolbox extends",
-            "contents": "{% extends \"${1:base.html}\" %}"
-        },
-        {
-            "trigger": "block\tNunjucks Toolbox block",
-            "contents": "{% block ${1:name} %}\n\t$0\n{% endblock %}"
-        },
-        {
-            "trigger": "macro\tNunjucks Toolbox macro",
-            "contents": "{% macro ${1:name}(${2:params}) %}\n\t$0\n{% endmacro %}"
-        },
-        {
-            "trigger": "set\tNunjucks Toolbox variable",
-            "contents": "{% set ${1:variable} = ${2:value} %}"
-        },
-        {
-            "trigger": "include\tNunjucks Toolbox include",
-            "contents": "{% include \"${1:template.html}\" %}"
-        },
-        {
-            "trigger": "comment\tNunjucks Toolbox comment",
-            "contents": "{# ${1:comment} #}"
-        },
-        {
-            "trigger": "var\tNunjucks Toolbox variable output",
-            "contents": "{{ ${1:variable} }}"
-        },
-        {
-            "trigger": "filter\tNunjucks Toolbox filter",
-            "contents": "{{ ${1:variable} | ${2:filter} }}"
-        },
-        {
-            "trigger": "elif\tNunjucks Toolbox elif",
-            "contents": "{% elif ${1:condition} %}"
-        },
-        {
-            "trigger": "else\tNunjucks Toolbox else",
-            "contents": "{% else %}"
-        },
-        {
-            "trigger": "raw\tNunjucks Toolbox raw block",
-            "contents": "{% raw %}\n\t$0\n{% endraw %}"
-        },
-        {
-            "trigger": "import\tNunjucks Toolbox import",
-            "contents": "{% import \"${1:macros.html}\" as ${2:macros} %}"
-        },
-        {
-            "trigger": "from\tNunjucks Toolbox from import",
-            "contents": "{% from \"${1:macros.html}\" import ${2:macro} %}"
-        }
-    ]
+  "scope": "text.html.nunjucks-toolbox",
+  "completions": [
+    {
+      "trigger": "autoescape",
+      "contents": "{% autoescape ${1:on} %}\n\t$2\n{% endautoescape %}"
+    },
+    {
+      "trigger": "raw",
+      "contents": "{% raw %}\n\t$1\n{% endraw %}"
+    },
+    {
+      "trigger": "verbatim",
+      "contents": "{% verbatim %}\n\t$1\n{% endverbatim %}"
+    },
+    {
+      "trigger": "call",
+      "contents": "{% call ${1:macro_name}(${2:args}) %}\n\t$3\n{% endcall %}"
+    },
+    {
+      "trigger": "for\tNunjucks Toolbox for loop",
+      "contents": "{% for ${1:item} in ${2:items} %}\n\t$0\n{% endfor %}"
+    },
+    {
+      "trigger": "if\tNunjucks Toolbox if statement",
+      "contents": "{% if ${1:condition} %}\n\t$0\n{% endif %}"
+    },
+    {
+      "trigger": "ifelse\tNunjucks Toolbox if-else",
+      "contents": "{% if ${1:condition} %}\n\t${2:content}\n{% else %}\n\t$0\n{% endif %}"
+    },
+    {
+      "trigger": "extends\tNunjucks Toolbox extends",
+      "contents": "{% extends \"${1:base.html}\" %}"
+    },
+    {
+      "trigger": "block\tNunjucks Toolbox block",
+      "contents": "{% block ${1:name} %}\n\t$0\n{% endblock %}"
+    },
+    {
+      "trigger": "macro\tNunjucks Toolbox macro",
+      "contents": "{% macro ${1:name}(${2:params}) %}\n\t$0\n{% endmacro %}"
+    },
+    {
+      "trigger": "set\tNunjucks Toolbox variable",
+      "contents": "{% set ${1:variable} = ${2:value} %}"
+    },
+    {
+      "trigger": "include\tNunjucks Toolbox include",
+      "contents": "{% include \"${1:template.html}\" %}"
+    },
+    {
+      "trigger": "comment\tNunjucks Toolbox comment",
+      "contents": "{# ${1:comment} #}"
+    },
+    {
+      "trigger": "var\tNunjucks Toolbox variable output",
+      "contents": "{{ ${1:variable} }}"
+    },
+    {
+      "trigger": "filter\tNunjucks Toolbox filter",
+      "contents": "{{ ${1:variable} | ${2:filter} }}"
+    },
+    {
+      "trigger": "elif\tNunjucks Toolbox elif",
+      "contents": "{% elif ${1:condition} %}"
+    },
+    {
+      "trigger": "else\tNunjucks Toolbox else",
+      "contents": "{% else %}"
+    },
+    {
+      "trigger": "raw\tNunjucks Toolbox raw block",
+      "contents": "{% raw %}\n\t$0\n{% endraw %}"
+    },
+    {
+      "trigger": "import\tNunjucks Toolbox import",
+      "contents": "{% import \"${1:macros.html}\" as ${2:macros} %}"
+    },
+    {
+      "trigger": "from\tNunjucks Toolbox from import",
+      "contents": "{% from \"${1:macros.html}\" import ${2:macro} %}"
+    },
+    {
+      "trigger": "abs",
+      "contents": "abs"
+    },
+    {
+      "trigger": "attr",
+      "contents": "attr(${1:attribute})"
+    },
+    {
+      "trigger": "batch",
+      "contents": "batch(${1:linecount}, ${2:fill_with})"
+    },
+    {
+      "trigger": "capitalize",
+      "contents": "capitalize"
+    },
+    {
+      "trigger": "center",
+      "contents": "center(${1:width})"
+    },
+    {
+      "trigger": "default",
+      "contents": "default(${1:default_value})"
+    },
+    {
+      "trigger": "dictsort",
+      "contents": "dictsort"
+    },
+    {
+      "trigger": "escape",
+      "contents": "escape"
+    },
+    {
+      "trigger": "filesizeformat",
+      "contents": "filesizeformat"
+    },
+    {
+      "trigger": "first",
+      "contents": "first"
+    },
+    {
+      "trigger": "float",
+      "contents": "float"
+    },
+    {
+      "trigger": "forceescape",
+      "contents": "forceescape"
+    },
+    {
+      "trigger": "format",
+      "contents": "format(${1:args})"
+    },
+    {
+      "trigger": "groupby",
+      "contents": "groupby(${1:attribute})"
+    },
+    {
+      "trigger": "indent",
+      "contents": "indent(${1:width})"
+    },
+    {
+      "trigger": "int",
+      "contents": "int"
+    },
+    {
+      "trigger": "join",
+      "contents": "join(${1:separator})"
+    },
+    {
+      "trigger": "last",
+      "contents": "last"
+    },
+    {
+      "trigger": "length",
+      "contents": "length"
+    },
+    {
+      "trigger": "list",
+      "contents": "list"
+    },
+    {
+      "trigger": "lower",
+      "contents": "lower"
+    },
+    {
+      "trigger": "map",
+      "contents": "map(${1:attribute})"
+    },
+    {
+      "trigger": "max",
+      "contents": "max"
+    },
+    {
+      "trigger": "min",
+      "contents": "min"
+    },
+    {
+      "trigger": "nl2br",
+      "contents": "nl2br"
+    },
+    {
+      "trigger": "random",
+      "contents": "random"
+    },
+    {
+      "trigger": "reject",
+      "contents": "reject(${1:attribute})"
+    },
+    {
+      "trigger": "rejectattr",
+      "contents": "rejectattr(${1:attribute})"
+    },
+    {
+      "trigger": "replace",
+      "contents": "replace(${1:old}, ${2:new})"
+    },
+    {
+      "trigger": "reverse",
+      "contents": "reverse"
+    },
+    {
+      "trigger": "round",
+      "contents": "round(${1:precision})"
+    },
+    {
+      "trigger": "safe",
+      "contents": "safe"
+    },
+    {
+      "trigger": "select",
+      "contents": "select(${1:attribute})"
+    },
+    {
+      "trigger": "selectattr",
+      "contents": "selectattr(${1:attribute})"
+    },
+    {
+      "trigger": "slice",
+      "contents": "slice(${1:slices})"
+    },
+    {
+      "trigger": "sort",
+      "contents": "sort"
+    },
+    {
+      "trigger": "string",
+      "contents": "string"
+    },
+    {
+      "trigger": "striptags",
+      "contents": "striptags"
+    },
+    {
+      "trigger": "sum",
+      "contents": "sum"
+    },
+    {
+      "trigger": "title",
+      "contents": "title"
+    },
+    {
+      "trigger": "trim",
+      "contents": "trim"
+    },
+    {
+      "trigger": "truncate",
+      "contents": "truncate(${1:length})"
+    },
+    {
+      "trigger": "unique",
+      "contents": "unique"
+    },
+    {
+      "trigger": "upper",
+      "contents": "upper"
+    },
+    {
+      "trigger": "urlencode",
+      "contents": "urlencode"
+    },
+    {
+      "trigger": "urlize",
+      "contents": "urlize"
+    },
+    {
+      "trigger": "wordcount",
+      "contents": "wordcount"
+    },
+    {
+      "trigger": "wordwrap",
+      "contents": "wordwrap(${1:width})"
+    },
+    {
+      "trigger": "xmlattr",
+      "contents": "xmlattr"
+    },
+    {
+      "trigger": "tojson",
+      "contents": "tojson"
+    }
+  ]
 }
