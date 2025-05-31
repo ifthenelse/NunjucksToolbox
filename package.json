@@ -1,3 +1,4 @@
+Users/andreacollet/Projects/nunjucks-toolbox/package.json
 {
   "name": "Nunjucks Toolbox",
   "version": "2.0.0",
@@ -8,7 +9,10 @@
     "syntax",
     "highlighting",
     "sublime text",
-    "development"
+    "development",
+    "toolbox",
+    "filters",
+    "completions"
   ],
   "homepage": "https://github.com/andreacollet/nunjucks-toolbox",
   "bugs": "https://github.com/andreacollet/nunjucks-toolbox/issues",
@@ -22,8 +26,19 @@
   "files": [
     "Syntaxes/",
     "Completions/",
+    "Snippets/",
     "Settings/",
     "Preferences/",
-    "Build Systems/"
-  ]
+    "BuildSystems/",
+    "messages/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "sublime": ">=3000"
+  },
+  "scripts": {
+    "test": "python3 -c \"import yaml; yaml.safe_load(open('Syntaxes/NunjucksToolbox.sublime-syntax'))\"",
+    "validate": "python3 -c \"import json; json.load(open('Completions/NunjucksToolbox.sublime-completions'))\""
+  }
 }
