@@ -19,12 +19,15 @@ jobs:
         id: version
         run: |
           if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
+            # Remove refs/tags/ prefix and v prefix if present
+            VERSION=${GITHUB_REF#refs/tags/}
+            VERSION=${VERSION#v}
           else
             VERSION=${GITHUB_SHA::7}
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
+          echo "Full GITHUB_REF: $GITHUB_REF"
 
       - name: Create package directory
         run: |
@@ -74,12 +77,33 @@ jobs:
 
       - name: Create .sublime-package
         run: |
+          # Create a clean version string for filename
+          CLEAN_VERSION="${{ steps.version.outputs.version }}"
+          PACKAGE_NAME="Nunjucks-toolbox-${CLEAN_VERSION}.sublime-package"
+          
+          echo "Creating package: $PACKAGE_NAME"
+          echo "Working directory: $(pwd)"
+          echo "Package directory contents:"
+          ls -la package/
+          
           cd package
-          zip -r "Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package" Nunjucks-toolbox/
-          mv "Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package" ../
+          zip -r "../${PACKAGE_NAME}" Nunjucks-toolbox/
           cd ..
-          echo "Package created: Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package"
-          ls -la *.sublime-package
+          
+          if [ -f "$PACKAGE_NAME" ]; then
+            echo "✅ Package created successfully: $PACKAGE_NAME"
+            echo "Package size: $(du -h "$PACKAGE_NAME" | cut -f1)"
+            ls -la *.sublime-package
+          else
+            echo "❌ Package creation failed"
+            exit 1
+          fi
+
+      - name: Verify package contents
+        run: |
+          PACKAGE_NAME="Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package"
+          echo "📦 Package contents:"
+          unzip -l "$PACKAGE_NAME"
 
       - name: Upload package to release
         if: github.event_name == 'release'
@@ -94,15 +118,27 @@ jobs:
 
       - name: Generate package info
         run: |
+          PACKAGE_NAME="Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package"
+          
           echo "# Package Information" > package-info.md
           echo "" >> package-info.md
           echo "**Version:** ${{ steps.version.outputs.version }}" >> package-info.md
-          echo "**Package Size:** $(du -h Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package | cut -f1)" >> package-info.md
+          echo "**Package Size:** $(du -h "$PACKAGE_NAME" | cut -f1)" >> package-info.md
+          echo "**Created:** $(date)" >> package-info.md
           echo "" >> package-info.md
           echo "## Package Contents" >> package-info.md
           echo "\`\`\`" >> package-info.md
-          unzip -l "Nunjucks-toolbox-${{ steps.version.outputs.version }}.sublime-package" >> package-info.md
+          unzip -l "$PACKAGE_NAME" >> package-info.md
           echo "\`\`\`" >> package-info.md
+          
+          echo "" >> package-info.md
+          echo "## Features Included" >> package-info.md
+          echo "- ✅ Syntax Highlighting (Nunjucks-toolbox.sublime-syntax)" >> package-info.md
+          echo "- ✅ Code Snippets (Nunjucks-toolbox.sublime-snippets)" >> package-info.md
+          echo "- ✅ Auto-completion (Nunjucks-toolbox.sublime-completions)" >> package-info.md
+          echo "- ✅ Build System (Nunjucks.sublime-build)" >> package-info.md
+          echo "- ✅ Auto-Pairing (Nunjucks Auto Pairs.sublime-settings)" >> package-info.md
+          echo "- ✅ Editor Preferences (3 .tmPreferences files)" >> package-info.md
           
           cat package-info.md
 
