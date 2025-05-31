@@ -1,4 +1,4 @@
-Users/andreacollet/Projects/nunjucks-toolbox/package.json
+Users/ifthenelse/Projects/NunjucksToolbox/package.json
 {
   "name": "Nunjucks Toolbox",
   "version": "2.0.0",
@@ -14,11 +14,11 @@ Users/andreacollet/Projects/nunjucks-toolbox/package.json
     "filters",
     "completions"
   ],
-  "homepage": "https://github.com/andreacollet/nunjucks-toolbox",
-  "bugs": "https://github.com/andreacollet/nunjucks-toolbox/issues",
+  "homepage": "https://github.com/ifthenelse/NunjucksToolbox",
+  "bugs": "https://github.com/ifthenelse/NunjucksToolbox/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/andreacollet/nunjucks-toolbox.git"
+    "url": "https://github.com/ifthenelse/NunjucksToolbox.git"
   },
   "license": "MIT",
   "author": "Andrea Collet",
