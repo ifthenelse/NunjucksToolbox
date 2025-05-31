@@ -1,6 +1,5 @@
-Users/ifthenelse/Projects/NunjucksToolbox/package.json
 {
-  "name": "Nunjucks Toolbox",
+  "name": "NunjucksToolbox",
   "version": "2.0.0",
   "description": "Advanced Nunjucks templating syntax package for Sublime Text",
   "keywords": [
