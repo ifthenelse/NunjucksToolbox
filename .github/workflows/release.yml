@@ -23,14 +23,18 @@ jobs:
           mkdir -p package/"Nunjucks Toolbox"
           
           # Copy organized structure
-          cp -r Syntaxes package/"Nunjucks Toolbox"/
-          cp -r Completions package/"Nunjucks Toolbox"/
-          cp -r Settings package/"Nunjucks Toolbox"/
-          cp -r Preferences package/"Nunjucks Toolbox"/
-          cp -r "Build Systems" package/"Nunjucks Toolbox"/
+          [ -d "Syntaxes" ] && cp -r Syntaxes package/"Nunjucks Toolbox"/
+          [ -d "Completions" ] && cp -r Completions package/"Nunjucks Toolbox"/
+          [ -d "Snippets" ] && cp -r Snippets package/"Nunjucks Toolbox"/
+          [ -d "Settings" ] && cp -r Settings package/"Nunjucks Toolbox"/
+          [ -d "Preferences" ] && cp -r Preferences package/"Nunjucks Toolbox"/
+          [ -d "BuildSystems" ] && cp -r BuildSystems package/"Nunjucks Toolbox"/
           cp README.md package/"Nunjucks Toolbox"/
-          cp LICENSE package/"Nunjucks Toolbox"/
           cp package.json package/"Nunjucks Toolbox"/
+          [ -f "LICENSE" ] && cp LICENSE package/"Nunjucks Toolbox"/
+          
+          echo "Package contents:"
+          ls -la package/"Nunjucks Toolbox"/
           
           # Create package
           cd package

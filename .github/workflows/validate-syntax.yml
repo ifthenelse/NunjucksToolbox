@@ -2,98 +2,98 @@ name: Validate Syntax
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   validate-syntax:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-        
-    - name: Install PyYAML
-      run: pip install PyYAML
-      
-    - name: Validate YAML syntax
-      run: |
-        python -c "
-        import yaml
-        import sys
-        
-        try:
-            with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
-                yaml.safe_load(f)
-            print('✓ Nunjucks-toolbox.sublime-syntax is valid YAML')
-        except yaml.YAMLError as e:
-            print(f'✗ YAML syntax error in Nunjucks-toolbox.sublime-syntax: {e}')
-            sys.exit(1)
-        except Exception as e:
-            print(f'✗ Error reading file: {e}')
-            sys.exit(1)
-        "
-        
-    - name: Check file extensions
-      run: |
-        if [ ! -f "Nunjucks-toolbox.sublime-syntax" ]; then
-          echo "✗ Nunjucks-toolbox.sublime-syntax file not found"
-          exit 1
-        fi
-        echo "✓ Required syntax files exist"
-        
-    - name: Validate syntax structure
-      run: |
-        python -c "
-        import yaml
-        import sys
-        
-        with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
-            syntax = yaml.safe_load(f)
-            
-        required_keys = ['name', 'file_extensions', 'scope', 'contexts']
-        missing_keys = [key for key in required_keys if key not in syntax]
-        
-        if missing_keys:
-            print(f'✗ Missing required keys: {missing_keys}')
-            sys.exit(1)
-            
-        if 'main' not in syntax.get('contexts', {}):
-            print('✗ Missing main context')
-            sys.exit(1)
-            
-        print('✓ Syntax structure is valid')
-        "
-        
-    - name: Check for common regex issues
-      run: |
-        python -c "
-        import yaml
-        import re
-        import sys
-        
-        with open('Nunjucks-toolbox.sublime-syntax', 'r') as f:
-            content = f.read()
-            
-        # Check for unescaped dots in regex patterns
-        if re.search(r'match:\s*[^\\n]*[^\\]\.[^*+?]', content):
-            print('⚠️ Warning: Found potential unescaped dots in regex patterns')
-            
-        # Check for common regex issues
-        problematic_patterns = [
-            (r'\*\*', 'Double asterisk without proper escaping'),
-            (r'\(\?\:', 'Non-capturing groups - consider if needed'),
-        ]
-        
-        for pattern, description in problematic_patterns:
-            if re.search(pattern, content):
-                print(f'⚠️ Warning: {description}')
-                
-        print('✓ Regex pattern check completed')
-        "
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install PyYAML
+        run: pip install PyYAML
+
+      - name: Validate YAML syntax
+        run: |
+          python -c "
+          import yaml
+          import sys
+
+          try:
+              with open('Syntaxes/NunjucksToolbox.sublime-syntax', 'r') as f:
+                  yaml.safe_load(f)
+              print('✓ Syntaxes/NunjucksToolbox.sublime-syntax is valid YAML')
+          except yaml.YAMLError as e:
+              print(f'✗ YAML syntax error in Syntaxes/NunjucksToolbox.sublime-syntax: {e}')
+              sys.exit(1)
+          except Exception as e:
+              print(f'✗ Error reading file: {e}')
+              sys.exit(1)
+          "
+
+      - name: Check file extensions
+        run: |
+          if [ ! -f "Syntaxes/NunjucksToolbox.sublime-syntax" ]; then
+            echo "✗ Syntaxes/NunjucksToolbox.sublime-syntax file not found"
+            exit 1
+          fi
+          echo "✓ Required syntax files exist"
+
+      - name: Validate syntax structure
+        run: |
+          python -c "
+          import yaml
+          import sys
+
+          with open('Syntaxes/NunjucksToolbox.sublime-syntax', 'r') as f:
+              syntax = yaml.safe_load(f)
+              
+          required_keys = ['name', 'file_extensions', 'scope', 'contexts']
+          missing_keys = [key for key in required_keys if key not in syntax]
+
+          if missing_keys:
+              print(f'✗ Missing required keys: {missing_keys}')
+              sys.exit(1)
+              
+          if 'main' not in syntax.get('contexts', {}):
+              print('✗ Missing main context')
+              sys.exit(1)
+              
+          print('✓ Syntax structure is valid')
+          "
+
+      - name: Check for common regex issues
+        run: |
+          python -c "
+          import yaml
+          import re
+          import sys
+
+          with open('Syntaxes/NunjucksToolbox.sublime-syntax', 'r') as f:
+              content = f.read()
+              
+          # Check for unescaped dots in regex patterns
+          if re.search(r'match:\s*[^\\n]*[^\\]\.[^*+?]', content):
+              print('⚠️ Warning: Found potential unescaped dots in regex patterns')
+              
+          # Check for common regex issues
+          problematic_patterns = [
+              (r'\*\*', 'Double asterisk without proper escaping'),
+              (r'\(\?\:', 'Non-capturing groups - consider if needed'),
+          ]
+
+          for pattern, description in problematic_patterns:
+              if re.search(pattern, content):
+                  print(f'⚠️ Warning: {description}')
+                  
+          print('✓ Regex pattern check completed')
+          "
