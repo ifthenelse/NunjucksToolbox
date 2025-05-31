@@ -1,7 +1,7 @@
 name: Release
 
 on:
-  # Manual release (primary method)
+  # Manual release only
   workflow_dispatch:
     inputs:
       version:
@@ -20,12 +20,6 @@ on:
         description: 'New features for README (optional)'
         required: false
         type: string
-  
-  # Also trigger on tag push (fallback for manual tags)
-  push:
-    tags: 
-      - 'v*.*.*'
-      - '*.*.*'
 
 jobs:
   release:
@@ -45,23 +39,12 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Determine version and release mode
+      - name: Set version
         id: version
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION="${{ github.event.inputs.version }}"
-            MODE="automated"
-            echo "🚀 Running automated release for version: $VERSION"
-          else
-            # Extract version from tag (remove 'v' prefix if present)
-            TAG_NAME=${GITHUB_REF#refs/tags/}
-            VERSION=${TAG_NAME#v}
-            MODE="tag-triggered"
-            echo "🏷️ Running tag-triggered release for version: $VERSION"
-          fi
-          
+          VERSION="${{ github.event.inputs.version }}"
+          echo "🚀 Running manual release for version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "mode=$MODE" >> $GITHUB_OUTPUT
           echo "tag_name=v$VERSION" >> $GITHUB_OUTPUT
 
       - name: Validate version format
@@ -73,22 +56,7 @@ jobs:
           fi
           echo "✅ Version format valid: ${{ steps.version.outputs.version }}"
 
-      - name: Check version consistency (tag-triggered mode)
-        if: steps.version.outputs.mode == 'tag-triggered'
-        run: |
-          PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
-          TAG_VERSION="${{ steps.version.outputs.version }}"
-          
-          if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
-            echo "❌ Version mismatch: package.json=$PACKAGE_VERSION, tag=$TAG_VERSION"
-            echo "💡 In tag-triggered mode, package.json must already contain the correct version."
-            echo "   Use manual workflow dispatch for automatic version updates."
-            exit 1
-          fi
-          echo "✅ Version consistency verified: $TAG_VERSION"
-
-      - name: Check if version already exists (automated mode)
-        if: steps.version.outputs.mode == 'automated'
+      - name: Check if version already exists
         run: |
           if git tag | grep -q "^v${{ steps.version.outputs.version }}$"; then
             echo "❌ Version v${{ steps.version.outputs.version }} already exists"
@@ -96,8 +64,7 @@ jobs:
           fi
           echo "✅ Version v${{ steps.version.outputs.version }} is available"
 
-      - name: Update package.json version (automated mode)
-        if: steps.version.outputs.mode == 'automated'
+      - name: Update package.json version
         run: |
           node -e "
           const fs = require('fs');
@@ -133,8 +100,7 @@ jobs:
           
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_OUTPUT
 
-      - name: Update README.md with new features (automated mode)
-        if: steps.version.outputs.mode == 'automated'
+      - name: Update README.md with new features
         run: |
           # If new features were provided, add them to README
           if [ -n "${{ github.event.inputs.new_features }}" ]; then
@@ -148,8 +114,7 @@ jobs:
           sed -i 's/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ steps.version.outputs.version }}/g' README.md
           echo "✅ Updated README.md version references"
 
-      - name: Update Messages/install.txt (automated mode)
-        if: steps.version.outputs.mode == 'automated'
+      - name: Update Messages/install.txt
         run: |
           # Update version in install message
           sed -i 's/Nunjucks Toolbox v[0-9]\+\.[0-9]\+\.[0-9]\+/Nunjucks Toolbox v${{ steps.version.outputs.version }}/g' Messages/install.txt
@@ -160,8 +125,8 @@ jobs:
 
       - name: Create version message file
         run: |
-          # Use custom release notes if provided (automated mode), otherwise use generated changelog
-          if [ "${{ steps.version.outputs.mode }}" = "automated" ] && [ -n "${{ github.event.inputs.release_notes }}" ]; then
+          # Use custom release notes if provided, otherwise use generated changelog
+          if [ -n "${{ github.event.inputs.release_notes }}" ]; then
             RELEASE_CONTENT="${{ github.event.inputs.release_notes }}"
           else
             RELEASE_CONTENT="${{ steps.changelog.outputs.CHANGELOG }}"
@@ -176,8 +141,8 @@ jobs:
           $RELEASE_CONTENT
           EOF
 
-          # Add breaking changes if provided (automated mode only)
-          if [ "${{ steps.version.outputs.mode }}" = "automated" ] && [ -n "${{ github.event.inputs.breaking_changes }}" ]; then
+          # Add breaking changes if provided
+          if [ -n "${{ github.event.inputs.breaking_changes }}" ]; then
             cat >> Messages/${{ steps.version.outputs.version }}.txt << EOF
 
           ⚠️ BREAKING CHANGES:
@@ -226,8 +191,7 @@ jobs:
           console.log('✅ Updated messages.json with version ${{ steps.version.outputs.version }}');
           "
 
-      - name: Commit and tag (automated mode)
-        if: steps.version.outputs.mode == 'automated'
+      - name: Commit and tag
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -297,7 +261,7 @@ jobs:
             ## 🆕 What's New
             ${{ steps.changelog.outputs.CHANGELOG }}
 
-            ${{ (steps.version.outputs.mode == 'automated' && github.event.inputs.breaking_changes) && format('## ⚠️ Breaking Changes\n{0}\n', github.event.inputs.breaking_changes) || '' }}
+            ${{ github.event.inputs.breaking_changes && format('## ⚠️ Breaking Changes\n{0}\n', github.event.inputs.breaking_changes) || '' }}
 
             ## 📦 Installation
 
@@ -332,24 +296,15 @@ jobs:
         run: |
           echo "# 🎉 Release Summary for v${{ steps.version.outputs.version }}" > release-summary.md
           echo "" >> release-summary.md
-          echo "## 🚀 Release Mode: ${{ steps.version.outputs.mode }}" >> release-summary.md
+          echo "## 🚀 Release Mode: Manual" >> release-summary.md
           echo "" >> release-summary.md
-          
-          if [ "${{ steps.version.outputs.mode }}" = "automated" ]; then
-            echo "## 📋 Files Updated (Automated Mode)" >> release-summary.md
-            echo "- ✅ package.json: Updated version number" >> release-summary.md
-            echo "- ✅ README.md: Updated version references + new features" >> release-summary.md
-            echo "- ✅ Messages/install.txt: Updated version and GitHub URLs" >> release-summary.md
-            echo "- ✅ Messages/${{ steps.version.outputs.version }}.txt: Created with changes only" >> release-summary.md
-            echo "- ✅ messages.json: Added new version reference" >> release-summary.md
-            echo "- ✅ Git: Committed changes and created tag" >> release-summary.md
-          else
-            echo "## 📋 Files Updated (Tag-Triggered Mode)" >> release-summary.md
-            echo "- ✅ Messages/${{ steps.version.outputs.version }}.txt: Created with changes" >> release-summary.md
-            echo "- ✅ messages.json: Added new version reference" >> release-summary.md
-            echo "- ℹ️ Other files assumed to be pre-updated" >> release-summary.md
-          fi
-          
+          echo "## 📋 Files Updated" >> release-summary.md
+          echo "- ✅ package.json: Updated version number" >> release-summary.md
+          echo "- ✅ README.md: Updated version references + new features" >> release-summary.md
+          echo "- ✅ Messages/install.txt: Updated version and GitHub URLs" >> release-summary.md
+          echo "- ✅ Messages/${{ steps.version.outputs.version }}.txt: Created with changes only" >> release-summary.md
+          echo "- ✅ messages.json: Added new version reference" >> release-summary.md
+          echo "- ✅ Git: Committed changes and created tag" >> release-summary.md
           echo "" >> release-summary.md
           echo "## 🔗 Repository URLs" >> release-summary.md
           echo "- All GitHub URLs use: https://github.com/ifthenelse/NunjucksToolbox" >> release-summary.md
