@@ -7,9 +7,9 @@
   "match_brackets_angle": false,
   "match_tags": true,
   "auto_complete_triggers": [
-    { "selector": "text.html.nunjucks", "characters": "{%" },
-    { "selector": "text.html.nunjucks", "characters": "{{" },
-    { "selector": "text.html.nunjucks", "characters": "|" }
+    { "selector": "text.html.nunjucks-toolbox", "characters": "{%" },
+    { "selector": "text.html.nunjucks-toolbox", "characters": "{{" },
+    { "selector": "text.html.nunjucks-toolbox", "characters": "|" }
   ],
   "auto_close_tags": true,
   "shift_tab_unindent": true,
