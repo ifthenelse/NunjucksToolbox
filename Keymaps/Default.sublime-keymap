@@ -116,6 +116,32 @@
     ]
   },
 
+  // Custom validation
+  {
+    "keys": ["ctrl+alt+v"],
+    "command": "nunjucks_validate",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+
+  // Filter helper
+  {
+    "keys": ["ctrl+alt+f"],
+    "command": "nunjucks_filter_help",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+
   // Navigation shortcuts
   {
     "keys": ["ctrl+r"],

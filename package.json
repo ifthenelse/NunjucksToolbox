@@ -25,6 +25,7 @@
   "files": [
     "Syntaxes/",
     "Completions/",
+    "Commands/",
     "Snippets/",
     "Settings/",
     "Preferences/",
