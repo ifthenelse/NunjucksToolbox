@@ -41,6 +41,8 @@
   },
   "scripts": {
     "test": "python3 -c \"import yaml; yaml.safe_load(open('Syntaxes/NunjucksToolbox.sublime-syntax'))\"",
-    "validate": "python3 -c \"import json; json.load(open('Completions/NunjucksToolbox.sublime-completions'))\""
+    "validate": "python3 -c \"import json; json.load(open('Completions/NunjucksToolbox.sublime-completions'))\"",
+    "test:keybindings": "python3 test_keybindings.py",
+    "test:all": "npm run test && npm run validate && npm run test:keybindings"
   }
 }
