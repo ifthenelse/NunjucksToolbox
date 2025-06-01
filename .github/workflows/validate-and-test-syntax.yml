@@ -9,7 +9,7 @@ on:
 jobs:
   validate-and-test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,12 +25,12 @@ jobs:
       - name: Validate YAML syntax and structure
         run: |
           echo "🔍 Validating syntax files..."
-          
+
           if [ ! -f "Syntaxes/NunjucksToolbox.sublime-syntax" ]; then
             echo "❌ Required syntax file missing"
             exit 1
           fi
-          
+
           python3 -c "
           import yaml, sys
           try:
@@ -62,7 +62,7 @@ jobs:
       - name: Create and test with real templates
         run: |
           mkdir -p test-templates
-          
+
           # Create test template
           cat > test-templates/test.njk << 'EOF'
           {# This is a comment #}
@@ -95,17 +95,17 @@ jobs:
         run: |
           python3 -c "
           import re
-          
+
           with open('test-templates/test.njk', 'r') as f:
               content = f.read()
-          
+
           patterns = {
               'comments': r'\{#.*?#\}',
               'variables': r'\{\{.*?\}\}',
               'tags': r'\{%.*?%\}',
               'filters': r'\|[\s]*\w+',
           }
-          
+
           print('🔍 Testing Nunjucks pattern recognition:')
           all_good = True
           for pattern_name, pattern in patterns.items():
@@ -116,15 +116,15 @@ jobs:
                   print(f'    Example: {example[:50]}...')
               else:
                   print(f'    ⚠️  No {pattern_name} found')
-          
+
           print('✅ Pattern recognition test completed')
           "
 
       - name: Validate related JSON files
         run: |
           echo "🔍 Validating JSON files..."
-          
-          for file in "Completions/NunjucksToolbox.sublime-completions" "Snippets/NunjucksToolbox.sublime-snippets" "package.json" "messages.json"; do
+
+          for file in "Completions/NunjucksToolbox.sublime-completions" "package.json" "messages.json"; do
             if [ -f "$file" ]; then
               python3 -c "import json; json.load(open('$file')); print('✅ $file is valid')"
             fi
@@ -134,16 +134,16 @@ jobs:
         run: |
           python3 -c "
           import yaml, json, os
-          
+
           main_scope = 'text.html.nunjucks-toolbox'
           issues = []
-          
+
           # Check syntax file
           with open('Syntaxes/NunjucksToolbox.sublime-syntax') as f:
               syntax = yaml.safe_load(f)
           if syntax.get('scope') != main_scope:
               issues.append(f'Syntax scope mismatch: {syntax.get(\"scope\")}')
-          
+
           # Check other files
           for filename in ['Snippets/NunjucksToolbox.sublime-snippets', 'Completions/NunjucksToolbox.sublime-completions']:
               if os.path.exists(filename):
@@ -151,7 +151,7 @@ jobs:
                       data = json.load(f)
                   if data.get('scope') and data.get('scope') != main_scope:
                       issues.append(f'{filename} scope mismatch: {data.get(\"scope\")}')
-          
+
           if issues:
               print('❌ Scope issues:', issues)
               exit(1)

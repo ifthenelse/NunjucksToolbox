@@ -1,0 +1,273 @@
+[
+  {
+    "keys": ["super+/"],
+    "command": "toggle_comment",
+    "args": { "block": false },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["super+shift+/"],
+    "command": "toggle_comment",
+    "args": { "block": true },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+shift+v"],
+    "command": "insert_snippet",
+    "args": { "contents": "{{ ${1:variable}${2: | ${3:filter}} }}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+shift+b"],
+    "command": "insert_snippet",
+    "args": { "contents": "{% block ${1:name} %}\n\t$0\n{% endblock %}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+shift+f"],
+    "command": "insert_snippet",
+    "args": {
+      "contents": "{% for ${1:item} in ${2:items} %}\n\t$0\n{% endfor %}"
+    },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+shift+i"],
+    "command": "insert_snippet",
+    "args": { "contents": "{% if ${1:condition} %}\n\t$0\n{% endif %}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+shift+m"],
+    "command": "insert_snippet",
+    "args": {
+      "contents": "{% macro ${1:name}(${2:params}) %}\n\t$0\n{% endmacro %}"
+    },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+shift+e"],
+    "command": "insert_snippet",
+    "args": { "contents": "{% extends \"${1:base.html}\" %}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+shift+n"],
+    "command": "insert_snippet",
+    "args": { "contents": "{% include \"${1:partial.html}\" %}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["f7"],
+    "command": "build",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["super+f7"],
+    "command": "build",
+    "args": { "variant": "Lint Only" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+super+v"],
+    "command": "nunjucks_validate",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+super+f"],
+    "command": "nunjucks_filter_help",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["super+m"],
+    "command": "move_to",
+    "args": { "to": "brackets" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["super+shift+m"],
+    "command": "expand_selection",
+    "args": { "to": "brackets" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["{", "%"],
+    "command": "insert_snippet",
+    "args": { "contents": "{% $0 %}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      },
+      {
+        "key": "preceding_text",
+        "operator": "regex_match",
+        "operand": ".*\\{$"
+      },
+      {
+        "key": "setting.auto_match_enabled",
+        "operator": "equal",
+        "operand": true
+      }
+    ]
+  },
+  {
+    "keys": ["{", "{"],
+    "command": "insert_snippet",
+    "args": { "contents": "{{ $0 }}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      },
+      {
+        "key": "preceding_text",
+        "operator": "regex_match",
+        "operand": ".*\\{$"
+      },
+      {
+        "key": "setting.auto_match_enabled",
+        "operator": "equal",
+        "operand": true
+      }
+    ]
+  },
+  {
+    "keys": ["{", "#"],
+    "command": "insert_snippet",
+    "args": { "contents": "{# $0 #}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      },
+      {
+        "key": "preceding_text",
+        "operator": "regex_match",
+        "operand": ".*\\{$"
+      },
+      {
+        "key": "setting.auto_match_enabled",
+        "operator": "equal",
+        "operand": true
+      }
+    ]
+  },
+  {
+    "keys": ["|"],
+    "command": "auto_complete",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox meta.interpolation.nunjucks-toolbox"
+      },
+      { "key": "auto_complete_visible", "operator": "equal", "operand": false }
+    ]
+  },
+  {
+    "keys": ["alt+shift+l"],
+    "command": "reindent",
+    "args": { "single_line": false },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  }
+]

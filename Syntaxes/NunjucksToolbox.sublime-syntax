@@ -21,42 +21,7 @@ contexts:
     - include: nunjucks-tags
     - include: html-content
 
-  nunjucks-variable:
-    - match: '\{\{'
-      scope: punctuation.definition.variable.begin.nunjucks
-      push:
-        - meta_scope: meta.variable.nunjucks
-        - match: '\}\}'
-          scope: punctuation.definition.variable.end.nunjucks
-          pop: true
-        - include: nunjucks-expression
-
-  nunjucks-filters:
-    - match: '\|'
-      scope: keyword.operator.filter.nunjucks
-      push:
-        - match: '(?=\}\}|\|)'
-          pop: true
-        - match: '\b\w+\b'
-          scope: support.function.filter.nunjucks
-
-  nunjucks-comment:
-    - match: '\{#'
-      scope: punctuation.definition.comment.begin.nunjucks
-      push:
-        - meta_scope: comment.block.nunjucks
-        - match: '#\}'
-          scope: punctuation.definition.comment.end.nunjucks
-          pop: true
-
   nunjucks-comments:
-    - match: "{% comment %}"
-      scope: punctuation.definition.comment.begin.nunjucks-toolbox
-      push:
-        - meta_scope: comment.block.nunjucks-toolbox
-        - match: "{% endcomment %}"
-          scope: punctuation.definition.comment.end.nunjucks-toolbox
-          pop: true
     - match: "{#"
       scope: punctuation.definition.comment.begin.nunjucks-toolbox
       push:

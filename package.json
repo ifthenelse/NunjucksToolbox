@@ -31,6 +31,7 @@
     "BuildSystems/",
     "Keymaps/",
     "Menu/",
+    "Commands/",
     "Messages/",
     "README.md",
     "LICENSE"

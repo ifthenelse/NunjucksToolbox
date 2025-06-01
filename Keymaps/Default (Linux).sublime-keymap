@@ -1,5 +1,4 @@
 [
-  // Toggle Nunjucks comments
   {
     "keys": ["ctrl+/"],
     "command": "toggle_comment",
@@ -24,10 +23,8 @@
       }
     ]
   },
-
-  // Quick snippet insertions
   {
-    "keys": ["ctrl+shift+v"],
+    "keys": ["alt+shift+v"],
     "command": "insert_snippet",
     "args": { "contents": "{{ ${1:variable}${2: | ${3:filter}} }}" },
     "context": [
@@ -39,7 +36,7 @@
     ]
   },
   {
-    "keys": ["ctrl+shift+b"],
+    "keys": ["alt+shift+b"],
     "command": "insert_snippet",
     "args": { "contents": "{% block ${1:name} %}\n\t$0\n{% endblock %}" },
     "context": [
@@ -51,7 +48,7 @@
     ]
   },
   {
-    "keys": ["ctrl+shift+f"],
+    "keys": ["alt+shift+f"],
     "command": "insert_snippet",
     "args": {
       "contents": "{% for ${1:item} in ${2:items} %}\n\t$0\n{% endfor %}"
@@ -65,7 +62,7 @@
     ]
   },
   {
-    "keys": ["ctrl+shift+i"],
+    "keys": ["alt+shift+i"],
     "command": "insert_snippet",
     "args": { "contents": "{% if ${1:condition} %}\n\t$0\n{% endif %}" },
     "context": [
@@ -77,7 +74,7 @@
     ]
   },
   {
-    "keys": ["ctrl+shift+m"],
+    "keys": ["alt+shift+m"],
     "command": "insert_snippet",
     "args": {
       "contents": "{% macro ${1:name}(${2:params}) %}\n\t$0\n{% endmacro %}"
@@ -90,8 +87,30 @@
       }
     ]
   },
-
-  // Template validation and building
+  {
+    "keys": ["alt+shift+e"],
+    "command": "insert_snippet",
+    "args": { "contents": "{% extends \"${1:base.html}\" %}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["alt+shift+n"],
+    "command": "insert_snippet",
+    "args": { "contents": "{% include \"${1:partial.html}\" %}" },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
   {
     "keys": ["f7"],
     "command": "build",
@@ -115,10 +134,8 @@
       }
     ]
   },
-
-  // Custom validation
   {
-    "keys": ["ctrl+alt+v"],
+    "keys": ["alt+ctrl+v"],
     "command": "nunjucks_validate",
     "context": [
       {
@@ -128,10 +145,8 @@
       }
     ]
   },
-
-  // Filter helper
   {
-    "keys": ["ctrl+alt+f"],
+    "keys": ["alt+ctrl+f"],
     "command": "nunjucks_filter_help",
     "context": [
       {
@@ -141,34 +156,6 @@
       }
     ]
   },
-
-  // Navigation shortcuts
-  {
-    "keys": ["ctrl+r"],
-    "command": "show_overlay",
-    "args": { "overlay": "goto", "show_files": false },
-    "context": [
-      {
-        "key": "selector",
-        "operator": "equal",
-        "operand": "text.html.nunjucks-toolbox"
-      }
-    ]
-  },
-  {
-    "keys": ["ctrl+shift+r"],
-    "command": "show_overlay",
-    "args": { "overlay": "goto", "show_files": true },
-    "context": [
-      {
-        "key": "selector",
-        "operator": "equal",
-        "operand": "text.html.nunjucks-toolbox"
-      }
-    ]
-  },
-
-  // Bracket navigation for Nunjucks tags
   {
     "keys": ["ctrl+m"],
     "command": "move_to",
@@ -193,8 +180,6 @@
       }
     ]
   },
-
-  // Auto-completion triggers
   {
     "keys": ["{", "%"],
     "command": "insert_snippet",
@@ -261,34 +246,6 @@
       }
     ]
   },
-
-  // Extend/include helpers
-  {
-    "keys": ["ctrl+shift+e"],
-    "command": "insert_snippet",
-    "args": { "contents": "{% extends \"${1:base.html}\" %}" },
-    "context": [
-      {
-        "key": "selector",
-        "operator": "equal",
-        "operand": "text.html.nunjucks-toolbox"
-      }
-    ]
-  },
-  {
-    "keys": ["ctrl+shift+n"],
-    "command": "insert_snippet",
-    "args": { "contents": "{% include \"${1:partial.html}\" %}" },
-    "context": [
-      {
-        "key": "selector",
-        "operator": "equal",
-        "operand": "text.html.nunjucks-toolbox"
-      }
-    ]
-  },
-
-  // Filter shortcuts
   {
     "keys": ["|"],
     "command": "auto_complete",
@@ -301,8 +258,6 @@
       { "key": "auto_complete_visible", "operator": "equal", "operand": false }
     ]
   },
-
-  // Quick documentation lookup
   {
     "keys": ["f1"],
     "command": "open_url",
@@ -315,10 +270,8 @@
       }
     ]
   },
-
-  // Format/indent Nunjucks code
   {
-    "keys": ["ctrl+shift+alt+f"],
+    "keys": ["alt+shift+l"],
     "command": "reindent",
     "args": { "single_line": false },
     "context": [
