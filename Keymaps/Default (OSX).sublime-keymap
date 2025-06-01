@@ -259,17 +259,6 @@
     ]
   },
   {
-    "keys": ["alt+shift+h"],
-    "command": "nunjucks_help",
-    "context": [
-      {
-        "key": "selector",
-        "operator": "equal",
-        "operand": "text.html.nunjucks-toolbox"
-      }
-    ]
-  },
-  {
     "keys": ["alt+shift+l"],
     "command": "reindent",
     "args": { "single_line": false },
