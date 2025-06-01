@@ -25,13 +25,13 @@
   "files": [
     "Syntaxes/",
     "Completions/",
-    "Commands/",
     "Snippets/",
     "Settings/",
     "Preferences/",
     "BuildSystems/",
     "Keymaps/",
     "Menu/",
+    "Commands/",
     "Messages/",
     "README.md",
     "LICENSE"
