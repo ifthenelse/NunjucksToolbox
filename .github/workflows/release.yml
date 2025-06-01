@@ -109,19 +109,16 @@ jobs:
       - name: Generate AI-powered release notes
         id: ai_content
         run: |
-          # Use GitHub Copilot CLI or OpenAI API to generate content
-          # For now, we'll use intelligent analysis of the changes
-
+          # Generate content and write to files (avoiding multiline output issues)
           node -e "
           const fs = require('fs');
           const analysis = JSON.parse(fs.readFileSync('change_analysis.json', 'utf8'));
 
           function generateReleaseNotes(analysis) {
-            const { categories, metrics, version } = analysis;
+            const { categories, metrics } = analysis;
             let notes = [];
             
-            // Generate feature notes
-            if (categories.features.length > 0) {
+            if (categories.features.length > 0 || metrics.new_snippets > 0) {
               notes.push('• Enhanced Nunjucks templating capabilities');
               if (metrics.new_snippets > 0) {
                 notes.push(\`• Added \${metrics.new_snippets} new code snippets for faster development\`);
@@ -134,25 +131,21 @@ jobs:
               }
             }
             
-            // Generate fix notes
             if (categories.fixes.length > 0) {
               notes.push('• Fixed various bugs and improved stability');
               notes.push('• Enhanced error handling and validation');
             }
             
-            // Generate improvement notes
             if (categories.improvements.length > 0) {
               notes.push('• Performance optimizations and code improvements');
               notes.push('• Better integration with Sublime Text features');
             }
             
-            // Add workflow/CI improvements
             const workflowFiles = analysis.files_changed.filter(f => f.includes('.github/'));
             if (workflowFiles.length > 0) {
               notes.push('• Improved development workflow and CI/CD processes');
             }
             
-            // Add documentation updates
             const docFiles = analysis.files_changed.filter(f => f.includes('README') || f.includes('.md'));
             if (docFiles.length > 0) {
               notes.push('• Updated documentation and examples');
@@ -196,10 +189,10 @@ jobs:
           const readmeFeatures = generateREADMEFeatures(analysis);
           const breakingChanges = detectBreakingChanges(analysis);
 
-          // Write to files for next steps (this is the safest approach)
-          fs.writeFileSync('generated_release_notes.txt', releaseNotes);
-          fs.writeFileSync('generated_readme_features.txt', readmeFeatures);
-          fs.writeFileSync('generated_breaking_changes.txt', breakingChanges);
+          // Write to files
+          fs.writeFileSync('release_notes.txt', releaseNotes);
+          fs.writeFileSync('readme_features.txt', readmeFeatures);
+          fs.writeFileSync('breaking_changes.txt', breakingChanges);
 
           console.log('✅ AI content generation complete');
           console.log('Release notes length:', releaseNotes.length);
@@ -207,20 +200,12 @@ jobs:
           console.log('Breaking changes length:', breakingChanges.length);
           "
 
-          # Set outputs using proper escaping and file reading
-          echo "RELEASE_NOTES<<DELIMITER_RELEASE" >> $GITHUB_OUTPUT
-          cat generated_release_notes.txt >> $GITHUB_OUTPUT
-          echo "DELIMITER_RELEASE" >> $GITHUB_OUTPUT
+          # Create simple boolean outputs instead of multiline content
+          echo "has_breaking_changes=$([ -s breaking_changes.txt ] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+          echo "has_readme_features=$([ -s readme_features.txt ] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+          echo "content_generated=true" >> $GITHUB_OUTPUT
 
-          echo "README_FEATURES<<DELIMITER_README" >> $GITHUB_OUTPUT
-          cat generated_readme_features.txt >> $GITHUB_OUTPUT
-          echo "DELIMITER_README" >> $GITHUB_OUTPUT
-
-          echo "BREAKING_CHANGES<<DELIMITER_BREAKING" >> $GITHUB_OUTPUT
-          cat generated_breaking_changes.txt >> $GITHUB_OUTPUT
-          echo "DELIMITER_BREAKING" >> $GITHUB_OUTPUT
-
-          echo "✅ Set GitHub Actions outputs"
+          echo "✅ Content generation and outputs complete"
 
       - name: Update package.json version
         run: |
@@ -235,14 +220,13 @@ jobs:
       - name: Update README.md with AI-generated features
         run: |
           # Add new features if any were generated
-          if [ -s "generated_readme_features.txt" ]; then
+          if [ "${{ steps.ai_content.outputs.has_readme_features }}" = "true" ]; then
             echo "📝 Adding AI-generated features to README.md..."
             
             # Read the generated features and add them after the Features section
-            FEATURES_CONTENT=$(cat generated_readme_features.txt)
-            if [ ! -z "$FEATURES_CONTENT" ]; then
+            if [ -s "readme_features.txt" ]; then
               # Create a temporary file with the new content
-              awk '/## Features/ {print; print ""; print "'"$FEATURES_CONTENT"'"; next} 1' README.md > README_temp.md
+              awk '/## Features/ {print; print ""; while ((getline line < "readme_features.txt") > 0) print line; close("readme_features.txt"); next} 1' README.md > README_temp.md
               mv README_temp.md README.md
               echo "✅ Added new features to README.md"
             fi
@@ -253,37 +237,41 @@ jobs:
           sed -i 's/v[0-9]\+\.[0-9]\+\.[0-9]\+/v${{ steps.version.outputs.version }}/g' README.md
           echo "✅ Updated README.md version references"
 
+      - name: Update Messages/install.txt
+        run: |
+          # Update version in install message
+          sed -i 's/Nunjucks Toolbox v[0-9]\+\.[0-9]\+\.[0-9]\+/Nunjucks Toolbox v${{ steps.version.outputs.version }}/g' Messages/install.txt
+
+          # Update GitHub URLs to use correct username
+          sed -i 's|https://github.com/andreacollet/nunjucks-toolbox|https://github.com/ifthenelse/NunjucksToolbox|g' Messages/install.txt
+          echo "✅ Updated Messages/install.txt"
+
       - name: Generate smart release message
         run: |
-          # Read the generated content from files (safer than using outputs)
-          RELEASE_NOTES_CONTENT=$(cat generated_release_notes.txt)
-          BREAKING_CHANGES_CONTENT=$(cat generated_breaking_changes.txt 2>/dev/null || echo "")
-
           # Create intelligent release message
-          cat > Messages/${{ steps.version.outputs.version }}.txt << 'RELEASE_EOF'
+          cat > Messages/${{ steps.version.outputs.version }}.txt << 'EOF'
           Nunjucks Toolbox v${{ steps.version.outputs.version }} - Release Notes
           =====================================================
 
           🆕 WHAT'S NEW:
-          RELEASE_EOF
+          EOF
 
           # Append the actual content
-          cat generated_release_notes.txt >> Messages/${{ steps.version.outputs.version }}.txt
+          cat release_notes.txt >> Messages/${{ steps.version.outputs.version }}.txt
 
           # Add breaking changes if detected
-          if [ -s "generated_breaking_changes.txt" ]; then
+          if [ "${{ steps.ai_content.outputs.has_breaking_changes }}" = "true" ]; then
             echo "" >> Messages/${{ steps.version.outputs.version }}.txt
             echo "⚠️ BREAKING CHANGES:" >> Messages/${{ steps.version.outputs.version }}.txt
-            cat generated_breaking_changes.txt >> Messages/${{ steps.version.outputs.version }}.txt
+            cat breaking_changes.txt >> Messages/${{ steps.version.outputs.version }}.txt
           fi
 
           # Add footer
-          cat >> Messages/${{ steps.version.outputs.version }}.txt << 'FOOTER_EOF'
+          cat >> Messages/${{ steps.version.outputs.version }}.txt << 'EOF'
 
           📖 Full documentation: https://github.com/ifthenelse/NunjucksToolbox
           🐛 Report issues: https://github.com/ifthenelse/NunjucksToolbox/issues
-
-          FOOTER_EOF
+          EOF
 
           echo "Released on $(date +"%Y-%m-%d")" >> Messages/${{ steps.version.outputs.version }}.txt
 
@@ -301,7 +289,7 @@ jobs:
           sortedMessages['install'] = messages['install'];
 
           // Sort version keys numerically
-          const versionKeys = Object.keys(messages).filter(k => k !== 'install').sort((a, b) => {
+          const versionKeys = Object.keys(messages).filter(k => k !== 'install'). sort((a, b) => {
             const parseVersion = v => v.split('.').map(Number);
             const aVer = parseVersion(a);
             const bVer = parseVersion(b);
@@ -377,48 +365,54 @@ jobs:
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1
+        run: |
+          # Create the GitHub release body from file
+          cat > github_release_body.md << 'EOF'
+          # Nunjucks Toolbox v${{ steps.version.outputs.version }}
+
+          ## 🆕 What's New
+          EOF
+
+          cat release_notes.txt >> github_release_body.md
+
+          if [ "${{ steps.ai_content.outputs.has_breaking_changes }}" = "true" ]; then
+            echo "" >> github_release_body.md
+            echo "## ⚠️ Breaking Changes" >> github_release_body.md
+            cat breaking_changes.txt >> github_release_body.md
+          fi
+
+          cat >> github_release_body.md << 'EOF'
+
+          ## 📦 Installation
+
+          ### Package Control (Recommended)
+          1. Open Command Palette (`Ctrl+Shift+P`/`Cmd+Shift+P`)
+          2. Run "Package Control: Install Package"
+          3. Search for "Nunjucks Toolbox" and install
+
+          ### Manual Installation
+          Download `NunjucksToolbox-${{ steps.version.outputs.version }}.sublime-package` below and extract to your Sublime Text `Packages/` directory.
+
+          ## 🔗 Links
+          - 📖 [Documentation](https://github.com/ifthenelse/NunjucksToolbox)
+          - 🐛 [Report Issues](https://github.com/ifthenelse/NunjucksToolbox/issues)
+          - 📝 [Release Notes](./Messages/${{ steps.version.outputs.version }}.txt)
+          EOF
+
+          if [ -n "${{ steps.analyze.outputs.LATEST_TAG }}" ]; then
+            echo "" >> github_release_body.md
+            echo "**Full Changelog**: ${{ steps.analyze.outputs.LATEST_TAG }}...v${{ steps.version.outputs.version }}" >> github_release_body.md
+          fi
+
+          # Create the release using GitHub CLI
+          gh release create v${{ steps.version.outputs.version }} \
+            --title "Nunjucks Toolbox v${{ steps.version.outputs.version }}" \
+            --notes-file github_release_body.md \
+            ./NunjucksToolbox-${{ steps.version.outputs.version }}.sublime-package
+
+          echo "✅ Created GitHub Release v${{ steps.version.outputs.version }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.version.outputs.tag_name }}
-          release_name: Nunjucks Toolbox v${{ steps.version.outputs.version }}
-          body: |
-            # Nunjucks Toolbox v${{ steps.version.outputs.version }}
-
-            ## 🆕 What's New
-            ${{ steps.ai_content.outputs.RELEASE_NOTES }}
-
-            ${{ steps.ai_content.outputs.BREAKING_CHANGES != '' && format('## ⚠️ Breaking Changes\n{0}\n', steps.ai_content.outputs.BREAKING_CHANGES) || '' }}
-
-            ## 📦 Installation
-
-            ### Package Control (Recommended)
-            1. Open Command Palette (`Ctrl+Shift+P`/`Cmd+Shift+P`)
-            2. Run "Package Control: Install Package"
-            3. Search for "Nunjucks Toolbox" and install
-
-            ### Manual Installation
-            Download `NunjucksToolbox-${{ steps.version.outputs.version }}.sublime-package` below and extract to your Sublime Text `Packages/` directory.
-
-            ## 🔗 Links
-            - 📖 [Documentation](https://github.com/ifthenelse/NunjucksToolbox)
-            - 🐛 [Report Issues](https://github.com/ifthenelse/NunjucksToolbox/issues)
-            - 📝 [Release Notes](./Messages/${{ steps.version.outputs.version }}.txt)
-
-            **Full Changelog**: ${{ steps.analyze.outputs.LATEST_TAG }}...v${{ steps.version.outputs.version }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Sublime Package to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./NunjucksToolbox-${{ steps.version.outputs.version }}.sublime-package
-          asset_name: NunjucksToolbox-${{ steps.version.outputs.version }}.sublime-package
-          asset_content_type: application/zip
 
       - name: Generate release summary
         run: |
