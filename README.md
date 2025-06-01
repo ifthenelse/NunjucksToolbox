@@ -6,6 +6,10 @@ An advanced [Nunjucks](https://mozilla.github.io/nunjucks/) templating syntax pa
 
 ## Features
 
+- 📝 **1+ New Snippets** - Additional code templates for faster development
+- 🎯 **Enhanced Completions** - Improved auto-completion with better context awareness
+- 🎨 **Advanced Highlighting** - Better syntax recognition and color schemes
+
 - 📝 **24+ New Snippets** - Additional code templates for faster development
 
 - 🎨 **Complete Syntax Highlighting** - Advanced Nunjucks template syntax support
