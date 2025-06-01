@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+{# ${1:comment} #}
+]]></content>
+    <tabTrigger>comment</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks comment</description>
+</snippet>

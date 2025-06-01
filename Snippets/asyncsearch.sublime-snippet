@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+{% asyncEach ${1:item} in ${2:items} %}
+    $0
+{% endasyncEach %}
+]]></content>
+    <tabTrigger>asynceach</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks async each loop</description>
+</snippet>

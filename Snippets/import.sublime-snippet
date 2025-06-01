@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+{% import "${1:macros.html}" as ${2:macros} %}
+]]></content>
+    <tabTrigger>import</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks import macros</description>
+</snippet>

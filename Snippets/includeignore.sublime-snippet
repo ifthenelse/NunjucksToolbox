@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+{% include "${1:partial.html}" ignore missing %}
+]]></content>
+    <tabTrigger>includeignore</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks include with ignore missing</description>
+</snippet>

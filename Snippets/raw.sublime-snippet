@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+{% raw %}
+    $0
+{% endraw %}
+]]></content>
+    <tabTrigger>raw</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks raw block</description>
+</snippet>

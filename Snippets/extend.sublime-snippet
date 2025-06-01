@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+{% extends "${1:base.html}" %}
+]]></content>
+    <tabTrigger>extends</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks extends template</description>
+</snippet>

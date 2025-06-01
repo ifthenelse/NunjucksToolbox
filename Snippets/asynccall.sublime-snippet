@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+{% asyncAll %}
+    $0
+{% endall %}
+]]></content>
+    <tabTrigger>asyncall</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks async all block</description>
+</snippet>

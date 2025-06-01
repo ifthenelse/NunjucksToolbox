@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+{% set ${1:variable} = ${2:value} %}
+]]></content>
+    <tabTrigger>set</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks set variable</description>
+</snippet>
