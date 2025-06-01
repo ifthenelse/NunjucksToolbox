@@ -29,6 +29,8 @@
     "Settings/",
     "Preferences/",
     "BuildSystems/",
+    "Keymaps/",
+    "Menu/",
     "Messages/",
     "README.md",
     "LICENSE"
