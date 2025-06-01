@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+{% for ${1:item} in ${2:items} %}
+    $3
+{% else %}
+    $0
+{% endfor %}
+]]></content>
+    <tabTrigger>forelse</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks for loop with else</description>
+</snippet>

@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+{% filter ${1:filtername} %}
+    $0
+{% endfilter %}
+]]></content>
+    <tabTrigger>filter</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks filter block</description>
+</snippet>

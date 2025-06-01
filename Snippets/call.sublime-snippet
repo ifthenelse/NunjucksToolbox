@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+{% call ${1:macroName}(${2:params}) %}
+    $0
+{% endcall %}
+]]></content>
+    <tabTrigger>call</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks call macro</description>
+</snippet>

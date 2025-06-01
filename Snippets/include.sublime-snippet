@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+{% include "${1:partial.html}" %}
+]]></content>
+    <tabTrigger>include</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks include template</description>
+</snippet>

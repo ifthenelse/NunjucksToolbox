@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+{% set ${1:variable} %}
+    $0
+{% endset %}
+]]></content>
+    <tabTrigger>setblock</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks set variable with block content</description>
+</snippet>

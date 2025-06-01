@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+{% if ${1:condition} %}
+    $0
+{% endif %}
+]]></content>
+    <tabTrigger>if</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks if statement</description>
+</snippet>

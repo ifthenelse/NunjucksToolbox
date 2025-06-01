@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+{{ ${1:variable}${2: | ${3:filter}} }}
+]]></content>
+    <tabTrigger>var</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks variable output</description>
+</snippet>

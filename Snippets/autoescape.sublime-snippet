@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+{% autoescape ${1:on} %}
+    $0
+{% endautoescape %}
+]]></content>
+    <tabTrigger>autoescape</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Nunjucks autoescape block</description>
+</snippet>
