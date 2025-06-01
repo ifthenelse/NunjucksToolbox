@@ -1,4 +1,4 @@
-Nunjucks Toolbox v2.0.0
+Nunjucks Toolbox v2.1.0
 ========================
 
 Thank you for installing Nunjucks Toolbox! 🎉
