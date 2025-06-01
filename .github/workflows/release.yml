@@ -196,31 +196,31 @@ jobs:
           const readmeFeatures = generateREADMEFeatures(analysis);
           const breakingChanges = detectBreakingChanges(analysis);
 
-          // Output for GitHub Actions
-          console.log('RELEASE_NOTES=' + releaseNotes);
-          console.log('README_FEATURES=' + readmeFeatures);
-          console.log('BREAKING_CHANGES=' + breakingChanges);
-
-          // Write to files for next steps
+          // Write to files for next steps (this is the safest approach)
           fs.writeFileSync('generated_release_notes.txt', releaseNotes);
           fs.writeFileSync('generated_readme_features.txt', readmeFeatures);
           fs.writeFileSync('generated_breaking_changes.txt', breakingChanges);
+
+          console.log('✅ AI content generation complete');
+          console.log('Release notes length:', releaseNotes.length);
+          console.log('README features length:', readmeFeatures.length);
+          console.log('Breaking changes length:', breakingChanges.length);
           "
 
-          # Set outputs
-          echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
+          # Set outputs using proper escaping and file reading
+          echo "RELEASE_NOTES<<DELIMITER_RELEASE" >> $GITHUB_OUTPUT
           cat generated_release_notes.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "DELIMITER_RELEASE" >> $GITHUB_OUTPUT
 
-          echo "README_FEATURES<<EOF" >> $GITHUB_OUTPUT
+          echo "README_FEATURES<<DELIMITER_README" >> $GITHUB_OUTPUT
           cat generated_readme_features.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "DELIMITER_README" >> $GITHUB_OUTPUT
 
-          echo "BREAKING_CHANGES<<EOF" >> $GITHUB_OUTPUT
+          echo "BREAKING_CHANGES<<DELIMITER_BREAKING" >> $GITHUB_OUTPUT
           cat generated_breaking_changes.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "DELIMITER_BREAKING" >> $GITHUB_OUTPUT
 
-          echo "✅ AI content generation complete"
+          echo "✅ Set GitHub Actions outputs"
 
       - name: Update package.json version
         run: |
@@ -238,10 +238,14 @@ jobs:
           if [ -s "generated_readme_features.txt" ]; then
             echo "📝 Adding AI-generated features to README.md..."
             
-            # Add features after the existing Features section
-            sed -i '/## Features/r generated_readme_features.txt' README.md
-            
-            echo "✅ Added new features to README.md"
+            # Read the generated features and add them after the Features section
+            FEATURES_CONTENT=$(cat generated_readme_features.txt)
+            if [ ! -z "$FEATURES_CONTENT" ]; then
+              # Create a temporary file with the new content
+              awk '/## Features/ {print; print ""; print "'"$FEATURES_CONTENT"'"; next} 1' README.md > README_temp.md
+              mv README_temp.md README.md
+              echo "✅ Added new features to README.md"
+            fi
           fi
 
           # Update version references
@@ -251,32 +255,37 @@ jobs:
 
       - name: Generate smart release message
         run: |
+          # Read the generated content from files (safer than using outputs)
+          RELEASE_NOTES_CONTENT=$(cat generated_release_notes.txt)
+          BREAKING_CHANGES_CONTENT=$(cat generated_breaking_changes.txt 2>/dev/null || echo "")
+
           # Create intelligent release message
-          cat > Messages/${{ steps.version.outputs.version }}.txt << EOF
+          cat > Messages/${{ steps.version.outputs.version }}.txt << 'RELEASE_EOF'
           Nunjucks Toolbox v${{ steps.version.outputs.version }} - Release Notes
           =====================================================
 
           🆕 WHAT'S NEW:
-          ${{ steps.ai_content.outputs.RELEASE_NOTES }}
-          EOF
+          RELEASE_EOF
+
+          # Append the actual content
+          cat generated_release_notes.txt >> Messages/${{ steps.version.outputs.version }}.txt
 
           # Add breaking changes if detected
           if [ -s "generated_breaking_changes.txt" ]; then
-            cat >> Messages/${{ steps.version.outputs.version }}.txt << EOF
-
-          ⚠️ BREAKING CHANGES:
-          ${{ steps.ai_content.outputs.BREAKING_CHANGES }}
-          EOF
+            echo "" >> Messages/${{ steps.version.outputs.version }}.txt
+            echo "⚠️ BREAKING CHANGES:" >> Messages/${{ steps.version.outputs.version }}.txt
+            cat generated_breaking_changes.txt >> Messages/${{ steps.version.outputs.version }}.txt
           fi
 
           # Add footer
-          cat >> Messages/${{ steps.version.outputs.version }}.txt << EOF
+          cat >> Messages/${{ steps.version.outputs.version }}.txt << 'FOOTER_EOF'
 
           📖 Full documentation: https://github.com/ifthenelse/NunjucksToolbox
           🐛 Report issues: https://github.com/ifthenelse/NunjucksToolbox/issues
 
-          Released on $(date +"%Y-%m-%d")
-          EOF
+          FOOTER_EOF
+
+          echo "Released on $(date +"%Y-%m-%d")" >> Messages/${{ steps.version.outputs.version }}.txt
 
           echo "✅ Generated smart release message"
 
@@ -380,7 +389,7 @@ jobs:
             ## 🆕 What's New
             ${{ steps.ai_content.outputs.RELEASE_NOTES }}
 
-            ${{ steps.ai_content.outputs.BREAKING_CHANGES && format('## ⚠️ Breaking Changes\n{0}\n', steps.ai_content.outputs.BREAKING_CHANGES) || '' }}
+            ${{ steps.ai_content.outputs.BREAKING_CHANGES != '' && format('## ⚠️ Breaking Changes\n{0}\n', steps.ai_content.outputs.BREAKING_CHANGES) || '' }}
 
             ## 📦 Installation
 
@@ -397,7 +406,7 @@ jobs:
             - 🐛 [Report Issues](https://github.com/ifthenelse/NunjucksToolbox/issues)
             - 📝 [Release Notes](./Messages/${{ steps.version.outputs.version }}.txt)
 
-            **Full Changelog**: ${{ steps.changelog.outputs.LATEST_TAG }}...v${{ steps.version.outputs.version }}
+            **Full Changelog**: ${{ steps.analyze.outputs.LATEST_TAG }}...v${{ steps.version.outputs.version }}
           draft: false
           prerelease: false
 
