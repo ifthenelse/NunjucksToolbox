@@ -1,0 +1,56 @@
+[
+  {
+    "caption": "Preferences",
+    "id": "preferences",
+    "children": [
+      {
+        "caption": "Package Settings",
+        "id": "package-settings",
+        "children": [
+          {
+            "caption": "NunjucksToolbox",
+            "children": [
+              {
+                "caption": "Key Bindings",
+                "command": "edit_settings",
+                "args": {
+                  "base_file": "${packages}/NunjucksToolbox/Keymaps/Default.sublime-keymap",
+                  "default": "[\n\t${0}\n]\n"
+                }
+              },
+              {
+                "caption": "-"
+              },
+              {
+                "caption": "Documentation",
+                "command": "open_url",
+                "args": {
+                  "url": "https://github.com/ifthenelse/NunjucksToolbox/blob/main/README.md"
+                }
+              },
+              {
+                "caption": "Issues",
+                "command": "open_url",
+                "args": {
+                  "url": "https://github.com/ifthenelse/NunjucksToolbox/issues"
+                }
+              }
+            ]
+          },
+          {
+            "caption": "Nunjucks",
+            "children": [
+              {
+                "caption": "Nunjucks templating documentation",
+                "command": "open_url",
+                "args": {
+                  "url": "https://mozilla.github.io/nunjucks/templating.html"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
