@@ -3,15 +3,15 @@ name: Test Key Bindings
 on:
   push:
     paths:
-      - 'Keymaps/**'
-      - 'Snippets/**'
-      - 'Syntaxes/**'
-      - '.github/workflows/test-keybindings.yml'
+      - "Keymaps/**"
+      - "Snippets/**"
+      - "Syntaxes/**"
+      - ".github/workflows/test-keybindings.yml"
   pull_request:
     paths:
-      - 'Keymaps/**'
-      - 'Snippets/**'
-      - 'Syntaxes/**'
+      - "Keymaps/**"
+      - "Snippets/**"
+      - "Syntaxes/**"
   workflow_dispatch:
 
 jobs:
@@ -29,17 +29,17 @@ jobs:
           - os: macos-latest
             platform: "OSX"
             keymap_file: "Default (OSX).sublime-keymap"
-    
+
     runs-on: ${{ matrix.os }}
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -54,12 +54,12 @@ jobs:
           echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
           sudo apt-get update
           sudo apt-get install -y sublime-text xvfb
-          
+
           # Create virtual display for headless testing
           export DISPLAY=:99
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
           sleep 3
-          
+
           echo "DISPLAY=:99" >> $GITHUB_ENV
           echo "SUBLIME_PATH=/opt/sublime_text/sublime_text" >> $GITHUB_ENV
 
@@ -70,7 +70,7 @@ jobs:
           $url = "https://download.sublimetext.com/Sublime%20Text%20Build%203211%20x64.zip"
           Invoke-WebRequest -Uri $url -OutFile "sublime_text.zip"
           Expand-Archive -Path "sublime_text.zip" -DestinationPath "C:\sublime_text"
-          
+
           echo "SUBLIME_PATH=C:\sublime_text\sublime_text.exe" >> $env:GITHUB_ENV
         shell: powershell
 
@@ -82,7 +82,7 @@ jobs:
           hdiutil attach sublime_text.dmg
           cp -R "/Volumes/Sublime Text/Sublime Text.app" /Applications/
           hdiutil detach "/Volumes/Sublime Text"
-          
+
           echo "SUBLIME_PATH=/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" >> $GITHUB_ENV
 
       - name: Create test script
@@ -354,10 +354,10 @@ jobs:
             PACKAGES_DIR="$HOME/.config/sublime-text-3/Packages"
             mkdir -p "$PACKAGES_DIR"
           fi
-          
+
           # Copy our package
           cp -r . "$PACKAGES_DIR/NunjucksToolbox"
-          
+
           echo "PACKAGES_DIR=$PACKAGES_DIR" >> $GITHUB_ENV
         shell: bash
 
@@ -365,9 +365,9 @@ jobs:
         run: |
           cat > test_template.njk << 'EOF'
           {% extends "base.html" %}
-          
+
           {% block title %}Test Page{% endblock %}
-          
+
           {% block content %}
           <div class="container">
               {% for item in items %}
@@ -378,7 +378,7 @@ jobs:
               {% endfor %}
           </div>
           {% endblock %}
-          
+
           {% macro card(title, content) %}
           <div class="card">
               <h4>{{ title }}</h4>
@@ -392,7 +392,7 @@ jobs:
         run: |
           # Test that Sublime Text can load our syntax
           timeout 30s xvfb-run -a $SUBLIME_PATH --command "set_file_type text.html.nunjucks-toolbox" test_template.njk || true
-          
+
           # Verify syntax highlighting is applied
           echo "✅ Sublime Text can load Nunjucks syntax"
 
@@ -420,9 +420,9 @@ jobs:
           import yaml
           import sys
           from pathlib import Path
-          
+
           errors = []
-          
+
           # Test syntax file
           try:
               with open('Syntaxes/NunjucksToolbox.sublime-syntax', 'r') as f:
@@ -430,7 +430,7 @@ jobs:
               print('✅ Syntax file is valid YAML')
           except Exception as e:
               errors.append(f'Syntax file error: {e}')
-          
+
           # Test completions
           try:
               with open('Completions/NunjucksToolbox.sublime-completions', 'r') as f:
@@ -438,7 +438,7 @@ jobs:
               print('✅ Completions file is valid JSON')
           except Exception as e:
               errors.append(f'Completions file error: {e}')
-          
+
           # Test package.json
           try:
               with open('package.json', 'r') as f:
@@ -452,13 +452,13 @@ jobs:
               print('✅ package.json is valid')
           except Exception as e:
               errors.append(f'package.json error: {e}')
-          
+
           # Test snippets
           snippets_dir = Path('Snippets')
           if snippets_dir.exists():
               snippet_count = len(list(snippets_dir.glob('*.sublime-snippet')))
               print(f'✅ Found {snippet_count} snippet files')
-          
+
           if errors:
               print('❌ Validation errors:')
               for error in errors:
@@ -473,20 +473,20 @@ jobs:
         run: |
           cat > test_report_${{ matrix.platform }}.md << EOF
           # Key Bindings Test Report - ${{ matrix.platform }}
-          
+
           **Platform:** ${{ matrix.platform }}  
           **OS:** ${{ matrix.os }}  
           **Date:** $(date)
-          
+
           ## Test Results
-          
+
           - ✅ Keymap file validation
           - ✅ Conflict detection 
           - ✅ Sublime Text integration
           - ✅ Package file validation
-          
+
           ## Key Bindings Summary
-          
+
           | Shortcut | Command | Description |
           |----------|---------|-------------|
           | Alt+Shift+V | insert_snippet | Variable insertion |
@@ -498,20 +498,20 @@ jobs:
           | Alt+Shift+N | insert_snippet | Include insertion |
           | F7 | build | Template validation |
           | F1 | open_url | Documentation |
-          
+
           ## Auto-completion Triggers
-          
+
           - \`{\` + \`%\` → \`{% %}\`
           - \`{\` + \`{\` → \`{{ }}\`
           - \`{\` + \`#\` → \`{# #}\`
-          
+
           ## Platform-Specific Notes
-          
+
           **${{ matrix.platform }}**: All key bindings use appropriate modifiers and avoid conflicts with system shortcuts.
           EOF
 
       - name: Upload test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-reports
@@ -521,40 +521,41 @@ jobs:
     needs: test-keybindings
     runs-on: ubuntu-latest
     if: always()
-    
+
     steps:
       - name: Download all reports
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: test-reports
-      
+          path: ./reports
+
       - name: Combine reports
         run: |
           cat > KEYBINDING_TEST_RESULTS.md << 'EOF'
           # NunjucksToolbox Key Bindings Test Results
-          
+
           This document contains the comprehensive test results for key bindings across all supported platforms.
-          
+
           ## Overview
-          
+
           The NunjucksToolbox package has been tested on:
           - ✅ Windows (Latest)
           - ✅ macOS (Latest) 
           - ✅ Linux (Ubuntu Latest)
-          
+
           ## Test Coverage
-          
+
           - **Conflict Detection**: Ensures no conflicts with Sublime Text defaults
           - **International Keyboard Support**: Works with various keyboard layouts
           - **Context Restrictions**: All bindings properly scoped to Nunjucks files
           - **Snippet Integration**: Validates snippet syntax and functionality
           - **Package Validation**: Verifies all package files are correctly formatted
-          
+
           EOF
-          
+
           echo "## Detailed Reports" >> KEYBINDING_TEST_RESULTS.md
           echo "" >> KEYBINDING_TEST_RESULTS.md
-          
+
           for report in test_report_*.md; do
               if [ -f "$report" ]; then
                   cat "$report" >> KEYBINDING_TEST_RESULTS.md
@@ -563,9 +564,9 @@ jobs:
                   echo "" >> KEYBINDING_TEST_RESULTS.md
               fi
           done
-      
+
       - name: Upload combined report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: combined-test-results
           path: KEYBINDING_TEST_RESULTS.md
@@ -573,21 +574,21 @@ jobs:
   test-manual-scenarios:
     runs-on: ubuntu-latest
     needs: test-keybindings
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      
+          python-version: "3.11"
+
       - name: Test manual key binding scenarios
         run: |
           python3 << 'EOF'
           import json
-          
+
           # Test scenarios that should work
           test_scenarios = [
               {
@@ -609,13 +610,13 @@ jobs:
                   "context": "After typing {"
               }
           ]
-          
+
           print("🧪 Testing manual scenarios...")
           for scenario in test_scenarios:
               print(f"✅ {scenario['name']}: {' + '.join(scenario['keys'])}")
               print(f"   Context: {scenario['context']}")
               print(f"   Expected: {repr(scenario['expected_output'])}")
               print()
-          
+
           print("🎉 All manual scenarios documented and validated")
           EOF
