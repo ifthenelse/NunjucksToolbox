@@ -1,194 +1,285 @@
 [
-  // Toggle Nunjucks comments
   {
     "keys": ["ctrl+/"],
     "command": "toggle_comment",
-    "args": {"block": false},
+    "args": { "block": false },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
   {
     "keys": ["ctrl+shift+/"],
     "command": "toggle_comment",
-    "args": {"block": true},
+    "args": { "block": true },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
-
-  // Quick snippet insertions (using alt+shift to avoid conflicts)
   {
     "keys": ["alt+shift+v"],
     "command": "insert_snippet",
-    "args": {"contents": "{{ ${1:variable}${2: | ${3:filter}} }}"},
+    "args": { "contents": "{{ ${1:variable}${2: | ${3:filter}} }}" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
   {
     "keys": ["alt+shift+b"],
     "command": "insert_snippet",
-    "args": {"contents": "{% block ${1:name} %}\n\t$0\n{% endblock %}"},
+    "args": { "contents": "{% block ${1:name} %}\n\t$0\n{% endblock %}" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
   {
     "keys": ["alt+shift+f"],
     "command": "insert_snippet",
-    "args": {"contents": "{% for ${1:item} in ${2:items} %}\n\t$0\n{% endfor %}"},
+    "args": {
+      "contents": "{% for ${1:item} in ${2:items} %}\n\t$0\n{% endfor %}"
+    },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
   {
     "keys": ["alt+shift+i"],
     "command": "insert_snippet",
-    "args": {"contents": "{% if ${1:condition} %}\n\t$0\n{% endif %}"},
+    "args": { "contents": "{% if ${1:condition} %}\n\t$0\n{% endif %}" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
   {
     "keys": ["alt+shift+m"],
     "command": "insert_snippet",
-    "args": {"contents": "{% macro ${1:name}(${2:params}) %}\n\t$0\n{% endmacro %}"},
+    "args": {
+      "contents": "{% macro ${1:name}(${2:params}) %}\n\t$0\n{% endmacro %}"
+    },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
-
-  // Extend/include helpers
   {
     "keys": ["alt+shift+e"],
     "command": "insert_snippet",
-    "args": {"contents": "{% extends \"${1:base.html}\" %}"},
+    "args": { "contents": "{% extends \"${1:base.html}\" %}" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
   {
     "keys": ["alt+shift+n"],
     "command": "insert_snippet",
-    "args": {"contents": "{% include \"${1:partial.html}\" %}"},
+    "args": { "contents": "{% include \"${1:partial.html}\" %}" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
-
-  // Template validation and building
   {
     "keys": ["f7"],
     "command": "build",
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
   {
     "keys": ["ctrl+f7"],
     "command": "build",
-    "args": {"variant": "Lint Only"},
+    "args": { "variant": "Lint Only" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
-
-  // Custom validation (using alt+ctrl to avoid conflicts)
   {
     "keys": ["alt+ctrl+v"],
     "command": "nunjucks_validate",
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
-
-  // Filter helper
   {
     "keys": ["alt+ctrl+f"],
     "command": "nunjucks_filter_help",
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
-
-  // Bracket navigation for Nunjucks tags
   {
     "keys": ["ctrl+m"],
     "command": "move_to",
-    "args": {"to": "brackets"},
+    "args": { "to": "brackets" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
   {
     "keys": ["ctrl+shift+m"],
     "command": "expand_selection",
-    "args": {"to": "brackets"},
+    "args": { "to": "brackets" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
-
-  // Auto-completion triggers (safe for international keyboards)
   {
     "keys": ["{", "%"],
     "command": "insert_snippet",
-    "args": {"contents": "{% $0 %}"},
+    "args": { "contents": "{% $0 %}" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"},
-      {"key": "preceding_text", "operator": "regex_match", "operand": ".*\\{$"},
-      {"key": "setting.auto_match_enabled", "operator": "equal", "operand": true}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      },
+      {
+        "key": "preceding_text",
+        "operator": "regex_match",
+        "operand": ".*\\{$"
+      },
+      {
+        "key": "setting.auto_match_enabled",
+        "operator": "equal",
+        "operand": true
+      }
     ]
   },
   {
     "keys": ["{", "{"],
     "command": "insert_snippet",
-    "args": {"contents": "{{ $0 }}"},
+    "args": { "contents": "{{ $0 }}" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"},
-      {"key": "preceding_text", "operator": "regex_match", "operand": ".*\\{$"},
-      {"key": "setting.auto_match_enabled", "operator": "equal", "operand": true}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      },
+      {
+        "key": "preceding_text",
+        "operator": "regex_match",
+        "operand": ".*\\{$"
+      },
+      {
+        "key": "setting.auto_match_enabled",
+        "operator": "equal",
+        "operand": true
+      }
     ]
   },
   {
     "keys": ["{", "#"],
     "command": "insert_snippet",
-    "args": {"contents": "{# $0 #}"},
+    "args": { "contents": "{# $0 #}" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"},
-      {"key": "preceding_text", "operator": "regex_match", "operand": ".*\\{$"},
-      {"key": "setting.auto_match_enabled", "operator": "equal", "operand": true}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      },
+      {
+        "key": "preceding_text",
+        "operator": "regex_match",
+        "operand": ".*\\{$"
+      },
+      {
+        "key": "setting.auto_match_enabled",
+        "operator": "equal",
+        "operand": true
+      }
     ]
   },
-
-  // Filter shortcuts
   {
     "keys": ["|"],
     "command": "auto_complete",
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox meta.interpolation.nunjucks-toolbox"},
-      {"key": "auto_complete_visible", "operator": "equal", "operand": false}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox meta.interpolation.nunjucks-toolbox"
+      },
+      { "key": "auto_complete_visible", "operator": "equal", "operand": false }
     ]
   },
-
-  // Quick documentation lookup
   {
     "keys": ["f1"],
     "command": "open_url",
-    "args": {"url": "https://mozilla.github.io/nunjucks/templating.html"},
+    "args": { "url": "https://mozilla.github.io/nunjucks/templating.html" },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   },
-
-  // Format/indent Nunjucks code
   {
     "keys": ["alt+shift+l"],
     "command": "reindent",
-    "args": {"single_line": false},
+    "args": { "single_line": false },
     "context": [
-      {"key": "selector", "operator": "equal", "operand": "text.html.nunjucks-toolbox"}
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
     ]
   }
 ]
