@@ -34,12 +34,10 @@
                 "args": {
                   "url": "https://github.com/ifthenelse/NunjucksToolbox/issues"
                 }
-              }
-            ]
-          },
-          {
-            "caption": "Nunjucks",
-            "children": [
+              },
+              {
+                "caption": "-"
+              },
               {
                 "caption": "Nunjucks templating documentation",
                 "command": "open_url",
