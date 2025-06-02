@@ -21,6 +21,66 @@
       "trigger": "only",
       "contents": "only"
     },
+    {
+      "trigger": "asynceach",
+      "contents": "{% asynceach ${1:item} in ${2:items} %}\n\t$3\n{% endasynceach %}"
+    },
+    {
+      "trigger": "asyncall",
+      "contents": "{% asyncall ${1:item} in ${2:items} %}\n\t$3\n{% endasyncall %}"
+    },
+    {
+      "trigger": "while",
+      "contents": "{% while ${1:condition} %}\n\t$2\n{% endwhile %}"
+    },
+    {
+      "trigger": "break",
+      "contents": "{% break %}"
+    },
+    {
+      "trigger": "continue",
+      "contents": "{% continue %}"
+    },
+    {
+      "trigger": "var",
+      "contents": "{{ ${1:variable} }}"
+    },
+    {
+      "trigger": "varif",
+      "contents": "{{ ${1:variable} if ${2:condition} else ${3:default} }}"
+    },
+    {
+      "trigger": "comment",
+      "contents": "{# ${1:comment} #}"
+    },
+    {
+      "trigger": "loop.index",
+      "contents": "loop.index"
+    },
+    {
+      "trigger": "loop.index0",
+      "contents": "loop.index0"
+    },
+    {
+      "trigger": "loop.first",
+      "contents": "loop.first"
+    },
+    {
+      "trigger": "loop.last",
+      "contents": "loop.last"
+    },
+    {
+      "trigger": "loop.length",
+      "contents": "loop.length"
+    },
+    {
+      "trigger": "loop.revindex",
+      "contents": "loop.revindex"
+    },
+    {
+      "trigger": "loop.revindex0",
+      "contents": "loop.revindex0"
+    },
     "abs",
     "attr",
     "batch",
