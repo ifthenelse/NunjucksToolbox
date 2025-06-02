@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-    <key>name</key>
-    <string>Symbol List</string>
-    <key>scope</key>
-    <string>text.html.nunjucks-toolbox</string>
-    <key>settings</key>
     <dict>
-        <key>showInSymbolList</key>
-        <integer>1</integer>
-        <key>symbolTransformation</key>
-        <string>
-            s/.*{% block ([^%]+) %}.*/Block: $1/g;
-            s/.*{% macro ([^(]+)\([^)]*\) %}.*/Macro: $1/g;
-            s/.*{% set ([^=]+) =.*/Variable: $1/g;
-        </string>
+        <key>name</key>
+        <string>Symbol List</string>
+        <key>scope</key>
+        <string>text.html.nunjucks-toolbox</string>
+        <key>settings</key>
+        <dict>
+            <key>showInSymbolList</key>
+            <integer>1</integer>
+            <key>symbolTransformation</key>
+            <string>
+            s/.*{% block ([^%]+) %}.*/📦 Block: $1/g;
+            s/.*{% macro ([^(]+)\([^)]*\) %}.*/🔧 Macro: $1/g;
+            s/.*{% set ([^=]+) =.*/📋 Variable: $1/g;
+            s/.*{% call ([^(]+)\([^)]*\) %}.*/📞 Call: $1/g;
+            s/.*{% filter ([^%]+) %}.*/🔍 Filter: $1/g;
+            s/.*{% for ([^%]+) in ([^%]+) %}.*/🔄 Loop: $1 in $2/g;
+            s/.*{% if ([^%]+) %}.*/❓ Condition: $1/g;
+            s/.*{% include ['"]([^'"]+)['"] %}.*/📁 Include: $1/g;
+            s/.*{% import ['"]([^'"]+)['"] %}.*/📥 Import: $1/g;
+            s/.*{% extends ['"]([^'"]+)['"] %}.*/🏗️ Extends: $1/g;
+            </string>
+        </dict>
     </dict>
-</dict>
 </plist>
