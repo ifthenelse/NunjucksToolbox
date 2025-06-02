@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+{{ ${1:expression} if ${2:condition} else ${3:alternative} }}
+]]></content>
+    <tabTrigger>ternary</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Ternary conditional expression</description>
+</snippet>

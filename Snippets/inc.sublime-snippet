@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+{% include "${1:template.njk}" %}
+]]></content>
+    <tabTrigger>inc</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Simple include</description>
+</snippet>

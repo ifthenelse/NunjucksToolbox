@@ -1,0 +1,15 @@
+<snippet>
+    <content><![CDATA[
+{% switch ${1:variable} %}
+    {% case "${2:value1}" %}
+        ${3:content1}
+    {% case "${4:value2}" %}
+        ${5:content2}
+    {% default %}
+        ${6:default_content}
+{% endswitch %}
+]]></content>
+    <tabTrigger>switch</tabTrigger>
+    <scope>text.html.nunjucks-toolbox</scope>
+    <description>Switch statement</description>
+</snippet>
