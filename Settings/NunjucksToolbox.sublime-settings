@@ -1,0 +1,49 @@
+{
+  "settings": {
+    "auto_complete": true,
+    "auto_complete_triggers": [
+      {
+        "selector": "text.html.nunjucks-toolbox",
+        "characters": "{%"
+      },
+      {
+        "selector": "text.html.nunjucks-toolbox",
+        "characters": "{{"
+      },
+      {
+        "selector": "text.html.nunjucks-toolbox",
+        "characters": "{#"
+      },
+      {
+        "selector": "text.html.nunjucks-toolbox",
+        "characters": "|"
+      }
+    ],
+    "word_wrap": true,
+    "wrap_width": 120,
+    "tab_size": 2,
+    "translate_tabs_to_spaces": true,
+    "rulers": [80, 120],
+    "show_line_endings": true,
+    "default_line_ending": "unix",
+    "match_brackets": true,
+    "match_brackets_content": true,
+    "match_brackets_square": true,
+    "match_brackets_braces": true,
+    "match_tags": true,
+    "highlight_line": true,
+    "line_numbers": true,
+    "gutter": true,
+    "fold_buttons": true,
+    "fade_fold_buttons": true,
+    "spell_check": false,
+    "color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
+    "font_size": 12,
+    "font_face": "Monaco",
+    "draw_white_space": "selection",
+    "draw_indent_guides": true,
+    "indent_guide_options": ["draw_normal", "draw_active"],
+    "trim_trailing_white_space_on_save": true,
+    "ensure_newline_at_eof_on_save": true
+  }
+}
