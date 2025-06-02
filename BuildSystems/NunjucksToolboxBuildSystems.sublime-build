@@ -7,6 +7,14 @@
     {
       "name": "Syntax Check Only",
       "shell_cmd": "node -e \"const nunjucks = require('nunjucks'); try { nunjucks.precompile('$file'); console.log('✓ Template syntax valid'); } catch(e) { console.error('✗ Syntax error:', e.message); process.exit(1); }\""
+    },
+    {
+      "name": "Render with Sample Data",
+      "shell_cmd": "node -e \"const nunjucks = require('nunjucks'); const fs = require('fs'); try { const template = fs.readFileSync('$file', 'utf8'); const sampleData = { title: 'Sample Title', user: { name: 'John Doe', email: 'john@example.com' }, users: [{ name: 'Alice', id: 1 }, { name: 'Bob', id: 2 }] }; const result = nunjucks.renderString(template, sampleData); console.log('✓ Template rendered successfully'); console.log('Output length:', result.length, 'characters'); } catch(e) { console.error('✗ Render error:', e.message); process.exit(1); }\""
+    },
+    {
+      "name": "Precompile Template",
+      "shell_cmd": "node -e \"const nunjucks = require('nunjucks'); try { const compiled = nunjucks.precompileString(require('fs').readFileSync('$file', 'utf8'), '$file_base_name'); console.log('✓ Template precompiled successfully'); console.log(compiled); } catch(e) { console.error('✗ Precompile error:', e.message); process.exit(1); }\""
     }
   ]
 }
