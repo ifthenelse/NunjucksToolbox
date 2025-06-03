@@ -1,0 +1,86 @@
+[
+  {
+    "caption": "Nunjucks",
+    "id": "nunjucks-context-menu",
+    "children": [
+      {
+        "caption": "Format Template",
+        "command": "nunjucks_format",
+        "context": [
+          {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.nunjucks-toolbox"
+          }
+        ]
+      },
+      {
+        "caption": "Lint Template",
+        "command": "nunjucks_lint",
+        "context": [
+          {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.nunjucks-toolbox"
+          }
+        ]
+      },
+      {
+        "caption": "Validate Template",
+        "command": "nunjucks_validate",
+        "context": [
+          {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.nunjucks-toolbox"
+          }
+        ]
+      },
+      {
+        "caption": "-"
+      },
+      {
+        "caption": "Insert Variable",
+        "command": "insert_snippet",
+        "args": {
+          "contents": "{{ ${1:variable}${2: | ${3:filter}} }}"
+        },
+        "context": [
+          {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.nunjucks-toolbox"
+          }
+        ]
+      },
+      {
+        "caption": "Insert Comment",
+        "command": "insert_snippet",
+        "args": {
+          "contents": "{# ${1:comment} #}"
+        },
+        "context": [
+          {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.nunjucks-toolbox"
+          }
+        ]
+      },
+      {
+        "caption": "-"
+      },
+      {
+        "caption": "Help",
+        "command": "nunjucks_help",
+        "context": [
+          {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.nunjucks-toolbox"
+          }
+        ]
+      }
+    ]
+  }
+]

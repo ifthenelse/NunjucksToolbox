@@ -269,5 +269,50 @@
         "operand": "text.html.nunjucks-toolbox"
       }
     ]
+  },
+  {
+    "keys": ["super+shift+l"],
+    "command": "nunjucks_lint",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["super+shift+f"],
+    "command": "nunjucks_format",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["super+shift+v"],
+    "command": "nunjucks_validate",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
+  },
+  {
+    "keys": ["ctrl+space"],
+    "command": "auto_complete",
+    "args": { "disable_auto_insert": true },
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.nunjucks-toolbox"
+      }
+    ]
   }
 ]

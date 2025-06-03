@@ -1,7 +1,7 @@
 {
   "name": "NunjucksToolbox",
-  "version": "2.2.0",
-  "description": "Advanced Nunjucks templating syntax package for Sublime Text",
+  "version": "3.0.0",
+  "description": "Advanced Nunjucks templating syntax package for Sublime Text with enhanced features",
   "keywords": [
     "nunjucks",
     "template",
@@ -11,7 +11,14 @@
     "development",
     "toolbox",
     "filters",
-    "completions"
+    "completions",
+    "snippets",
+    "linting",
+    "formatting",
+    "validation",
+    "php",
+    "javascript",
+    "html"
   ],
   "homepage": "https://github.com/ifthenelse/NunjucksToolbox",
   "bugs": "https://github.com/ifthenelse/NunjucksToolbox/issues",
