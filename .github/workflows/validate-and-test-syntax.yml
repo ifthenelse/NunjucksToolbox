@@ -23,141 +23,19 @@ jobs:
         run: pip install PyYAML
 
       - name: Validate YAML syntax and structure
-        run: |
-          echo "🔍 Validating syntax files..."
-
-          if [ ! -f "Syntaxes/NunjucksToolbox.sublime-syntax" ]; then
-            echo "❌ Required syntax file missing"
-            exit 1
-          fi
-
-          python3 -c "
-          import yaml, sys
-          try:
-              with open('Syntaxes/NunjucksToolbox.sublime-syntax') as f:
-                  syntax = yaml.safe_load(f)
-              
-              # Validate structure
-              required = ['name', 'file_extensions', 'scope', 'contexts']
-              missing = [k for k in required if k not in syntax]
-              if missing:
-                  print('❌ Missing syntax keys:', missing)
-                  sys.exit(1)
-                  
-              contexts = syntax.get('contexts', {})
-              if 'main' not in contexts:
-                  print('❌ Missing main context')
-                  sys.exit(1)
-                  
-              print('✅ YAML syntax and structure valid')
-              print('  - Name:', syntax.get('name'))
-              print('  - Extensions:', syntax.get('file_extensions'))
-              print('  - Contexts:', len(contexts))
-              
-          except Exception as e:
-              print(f'❌ Error validating syntax file: {e}')
-              sys.exit(1)
-          "
+        run: python3 scripts/validate_syntax.py
 
       - name: Create and test with real templates
-        run: |
-          mkdir -p test-templates
-
-          # Create test template
-          cat > test-templates/test.njk << 'EOF'
-          {# This is a comment #}
-          <!DOCTYPE html>
-          <html>
-          <head>
-              <title>{{ title | default("Default Title") }}</title>
-          </head>
-          <body>
-              {% if user %}
-                  <h1>Hello, {{ user.name }}!</h1>
-              {% else %}
-                  <h1>Hello, Guest!</h1>
-              {% endif %}
-              
-              {% for item in items %}
-                  <div class="item">{{ item }}</div>
-              {% endfor %}
-              
-              {% macro renderButton(text, type="button") %}
-                  <button type="{{ type }}">{{ text }}</button>
-              {% endmacro %}
-              
-              {{ renderButton("Click me") }}
-          </body>
-          </html>
-          EOF
+        run: python3 scripts/test_template_generator.py test-templates
 
       - name: Test pattern recognition
-        run: |
-          python3 -c "
-          import re
-
-          with open('test-templates/test.njk', 'r') as f:
-              content = f.read()
-
-          patterns = {
-              'comments': r'\{#.*?#\}',
-              'variables': r'\{\{.*?\}\}',
-              'tags': r'\{%.*?%\}',
-              'filters': r'\|[\s]*\w+',
-          }
-
-          print('🔍 Testing Nunjucks pattern recognition:')
-          all_good = True
-          for pattern_name, pattern in patterns.items():
-              matches = re.findall(pattern, content, re.DOTALL)
-              print(f'  {pattern_name}: {len(matches)} matches')
-              if matches:
-                  example = matches[0].replace('\n', ' ').strip()
-                  print(f'    Example: {example[:50]}...')
-              else:
-                  print(f'    ⚠️  No {pattern_name} found')
-
-          print('✅ Pattern recognition test completed')
-          "
+        run: python3 scripts/test_patterns.py test-templates/test.njk
 
       - name: Validate related JSON files
-        run: |
-          echo "🔍 Validating JSON files..."
-
-          for file in "Completions/NunjucksToolbox.sublime-completions" "package.json" "messages.json"; do
-            if [ -f "$file" ]; then
-              python3 -c "import json; json.load(open('$file')); print('✅ $file is valid')"
-            fi
-          done
+        run: python3 scripts/validate_json_files.py
 
       - name: Check scope consistency
-        run: |
-          python3 -c "
-          import yaml, json, os
-
-          main_scope = 'text.html.nunjucks-toolbox'
-          issues = []
-
-          # Check syntax file
-          with open('Syntaxes/NunjucksToolbox.sublime-syntax') as f:
-              syntax = yaml.safe_load(f)
-          if syntax.get('scope') != main_scope:
-              issues.append(f'Syntax scope mismatch: {syntax.get(\"scope\")}')
-
-          # Check other files
-          for filename in ['Snippets/NunjucksToolbox.sublime-snippets', 'Completions/NunjucksToolbox.sublime-completions']:
-              if os.path.exists(filename):
-                  with open(filename) as f:
-                      data = json.load(f)
-                  if data.get('scope') and data.get('scope') != main_scope:
-                      issues.append(f'{filename} scope mismatch: {data.get(\"scope\")}')
-
-          if issues:
-              print('❌ Scope issues:', issues)
-              exit(1)
-          else:
-              print('✅ Scope consistency validated')
-          "
+        run: python3 scripts/validate_scope_consistency.py
 
       - name: Generate test report
         run: |
@@ -167,6 +45,9 @@ jobs:
           echo "- ✅ Pattern recognition testing" >> test-report.md
           echo "- ✅ JSON file validation" >> test-report.md
           echo "- ✅ Scope consistency check" >> test-report.md
+          echo "- ✅ Template generation testing" >> test-report.md
+          echo "" >> test-report.md
+          echo "All validation scripts executed successfully using external modules." >> test-report.md
 
       - name: Upload test artifacts
         uses: actions/upload-artifact@v4
@@ -175,3 +56,5 @@ jobs:
           path: |
             test-templates/
             test-report.md
+            scope-validation-report.md
+            json-validation-report.md
