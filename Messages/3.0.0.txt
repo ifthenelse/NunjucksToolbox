@@ -1,0 +1,19 @@
+Nunjucks Toolbox v3.0.0 - Release Notes
+=====================================================
+
+🆕 WHAT'S NEW:
+• Enhanced Nunjucks templating capabilities
+• Added 4 new code snippets for faster development
+• Improved syntax highlighting and pattern recognition
+• Enhanced auto-completion and IntelliSense features
+• Fixed various bugs and improved stability
+• Enhanced error handling and validation
+• Performance optimizations and code improvements
+• Better integration with Sublime Text features
+• Improved development workflow and CI/CD processes
+• Updated documentation and examples
+⚠️ BREAKING CHANGES:
+• Significant structural changes - review your setup
+📖 Full documentation: https://github.com/ifthenelse/NunjucksToolbox
+🐛 Report issues: https://github.com/ifthenelse/NunjucksToolbox/issues
+Released on 2025-06-03
