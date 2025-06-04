@@ -15,28 +15,6 @@
         ]
       },
       {
-        "caption": "Lint Template",
-        "command": "nunjucks_lint",
-        "context": [
-          {
-            "key": "selector",
-            "operator": "equal",
-            "operand": "text.html.nunjucks-toolbox"
-          }
-        ]
-      },
-      {
-        "caption": "Validate Template",
-        "command": "nunjucks_validate",
-        "context": [
-          {
-            "key": "selector",
-            "operator": "equal",
-            "operand": "text.html.nunjucks-toolbox"
-          }
-        ]
-      },
-      {
         "caption": "-"
       },
       {
