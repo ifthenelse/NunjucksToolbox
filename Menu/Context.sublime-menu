@@ -69,31 +69,6 @@
             "operand": "text.html.nunjucks-toolbox"
           }
         ]
-      },
-      {
-        "caption": "-"
-      },
-      {
-        "caption": "API Lookup",
-        "command": "nunjucks_help",
-        "context": [
-          {
-            "key": "selector",
-            "operator": "equal",
-            "operand": "text.html.nunjucks-toolbox"
-          }
-        ]
-      },
-      {
-        "caption": "Help & Documentation",
-        "command": "nunjucks_help",
-        "context": [
-          {
-            "key": "selector",
-            "operator": "equal",
-            "operand": "text.html.nunjucks-toolbox"
-          }
-        ]
       }
     ]
   }
