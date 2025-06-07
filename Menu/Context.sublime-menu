@@ -15,17 +15,6 @@
         ]
       },
       {
-        "caption": "Lint Template",
-        "command": "nunjucks_lint",
-        "context": [
-          {
-            "key": "selector",
-            "operator": "equal",
-            "operand": "text.html.nunjucks-toolbox"
-          }
-        ]
-      },
-      {
         "caption": "Validate Template",
         "command": "nunjucks_validate",
         "context": [
@@ -54,10 +43,10 @@
         ]
       },
       {
-        "caption": "Insert Comment",
+        "caption": "Insert Block",
         "command": "insert_snippet",
         "args": {
-          "contents": "{# ${1:comment} #}"
+          "contents": "{% ${1:block} ${2:name} %}\n${3:content}\n{% end${1:block} %}"
         },
         "context": [
           {
@@ -68,11 +57,11 @@
         ]
       },
       {
-        "caption": "-"
-      },
-      {
-        "caption": "Help",
-        "command": "nunjucks_help",
+        "caption": "Insert Comment",
+        "command": "insert_snippet",
+        "args": {
+          "contents": "{# ${1:comment} #}"
+        },
         "context": [
           {
             "key": "selector",
