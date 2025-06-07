@@ -15,6 +15,17 @@
         ]
       },
       {
+        "caption": "Validate Template",
+        "command": "nunjucks_validate",
+        "context": [
+          {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.nunjucks-toolbox"
+          }
+        ]
+      },
+      {
         "caption": "-"
       },
       {
@@ -22,6 +33,20 @@
         "command": "insert_snippet",
         "args": {
           "contents": "{{ ${1:variable}${2: | ${3:filter}} }}"
+        },
+        "context": [
+          {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.nunjucks-toolbox"
+          }
+        ]
+      },
+      {
+        "caption": "Insert Block",
+        "command": "insert_snippet",
+        "args": {
+          "contents": "{% ${1:block} ${2:name} %}\n${3:content}\n{% end${1:block} %}"
         },
         "context": [
           {
@@ -49,7 +74,18 @@
         "caption": "-"
       },
       {
-        "caption": "Help",
+        "caption": "API Lookup",
+        "command": "nunjucks_help",
+        "context": [
+          {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.nunjucks-toolbox"
+          }
+        ]
+      },
+      {
+        "caption": "Help & Documentation",
         "command": "nunjucks_help",
         "context": [
           {

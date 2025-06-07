@@ -3,6 +3,7 @@ import sublime_plugin
 import webbrowser
 import urllib.parse
 
+print("NunjucksHelpCommand loaded!")
 
 class NunjucksHelpCommand(sublime_plugin.TextCommand):
     """Nunjucks help command with API lookup functionality."""
@@ -18,7 +19,7 @@ class NunjucksHelpCommand(sublime_plugin.TextCommand):
 
         api_text = "Look up Nunjucks API"
         if selected_text:
-            api_text += f" for: {selected_text}"
+            api_text += " for: {}".format(selected_text)
 
         items = [
             ["🔍 API Lookup", api_text],
